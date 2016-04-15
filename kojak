@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+#
+# Copyright (C) 2016 Xenith Consulting Limited
+# Author: Salim Badakhchani <sal@redhat.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+########################################################################
+
+# Switch on Debugging
+set -x
+
+echo -e "\n# Installing packages"
+yum -y install docker git wget unzip net-tools bind-utils patch mlocate maven
+
+echo -e "\n# Patching docker"
+[[ -f "/etc/sysconfig/docker.orig" ]]; mv /etc/sysconfig/docker.orig /etc/sysconfig/docker
+cp -p /etc/sysconfig/docker /etc/sysconfig/docker.orig
+cat > /tmp/docker.patch << 'EOF'
+--- /etc/sysconfig/docker	2015-12-10 17:57:32.000000000 -0500
++++ /etc/sysconfig/docker	2016-03-31 02:28:46.835000000 -0400
+@@ -21,6 +21,7 @@
+ # distributed, you can tell docker to not look for full authorization by
+ # adding the registry to the INSECURE_REGISTRY line and uncommenting it.
+ # INSECURE_REGISTRY='--insecure-registry'
++INSECURE_REGISTRY='--insecure-registry 172.30.0.0/16'
+ 
+ # On an SELinux system, if you remove the --selinux-enabled option, you
+ # also need to turn on the docker_transition_unconfined boolean.
+EOF
+(cd / && patch -p0) < /tmp/docker.patch
+rm -f /tmp/docker.patch
+
+echo -e "\n# Initialising docker"
+systemctl enable docker
+systemctl restart docker
+
+docker pull openshift/origin-pod
+docker pull openshift/origin-sti-builder
+docker pull openshift/origin-docker-builder
+docker pull openshift/origin-deployer
+docker pull openshift/origin-docker-registry
+docker pull openshift/origin-haproxy-router
+
+echo -e "\n# Installing openshift"
+mkdir /opt/openshift-origin-v1.1
+chmod 755 /opt /opt/openshift-origin-v1.1
+cd /opt/openshift-origin-v1.1
+wget https://github.com/openshift/origin/releases/download/v1.1.3/openshift-origin-server-v1.1.3-cffae05-linux-64bit.tar.gz
+tar -zxvf openshift-origin-server-*.tar.gz --strip-components 1
+rm -f openshift-origin-server-*.tar.gz
+
+[[ -f /etc/profile.d/openshift.sh ]]; rm -f /etc/profile.d/openshift.sh
+cat > /etc/profile.d/openshift.sh << 'EOF'
+export OPENSHIFT=/opt/openshift-origin-v1.1
+export PATH=$OPENSHIFT:$PATH
+export KUBECONFIG=$OPENSHIFT/openshift.local.config/master/admin.kubeconfig
+export CURL_CA_BUNDLE=$OPENSHIFT/openshift.local.config/master/ca.crt
+EOF
+
+chmod 755 /etc/profile.d/openshift.sh
+. /etc/profile.d/openshift.sh
+
+./openshift start --write-config=openshift.local.config
+chmod +r $OPENSHIFT/openshift.local.config/master/admin.kubeconfig
+chmod +r $OPENSHIFT/openshift.local.config/master/openshift-registry.kubeconfig
+chmod +r $OPENSHIFT/openshift.local.config/master/openshift-router.kubeconfig
+
+echo -e "\n# Patching openshift"
+[[ -f "$OPENSHIFT/openshift.local.config/master/master-config.yaml.orig " ]]; mv $OPENSHIFT/openshift.local.config/master/master-config.yaml.orig $OPENSHIFT/openshift.local.config/master/master-config.yaml
+cp -p $OPENSHIFT/openshift.local.config/master/master-config.yaml $OPENSHIFT/openshift.local.config/master/master-config.yaml.orig 
+cat > /tmp/openshift.patch << 'EOF'
+--- /opt/openshift-origin-v1.1/openshift.local.config/master/master-config.yaml	2016-03-31 02:20:22.178000000 -0400
++++ /opt/openshift-origin-v1.1/openshift.local.config/master/master-config.yaml	2016-03-31 02:28:22.731000000 -0400
+@@ -140,7 +140,7 @@
+     mcsLabelsPerProject: 5
+     uidAllocatorRange: 1000000000-1999999999/10000
+ routingConfig:
+-  subdomain: router.default.svc.cluster.local
++  subdomain: example.com
+ serviceAccountConfig:
+   limitSecretReferences: false
+   managedNames:
+EOF
+(cd / && patch -p0) < /tmp/openshift.patch
+rm -f /tmp/openshift.patch
+
+echo -e "\n# Initialising openshift"
+nohup $OPENSHIFT/openshift start &
+
+while ! timeout 1 bash -c "echo > /dev/tcp/localhost/8443"; do echo -e "# Retrying...please be patient" && sleep 12 ; done
+
+echo -e "\n# Create service accounts for registry and router"
+oc login -u system:admin -n default
+echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"registry"}}' | oc create -f -
+echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"router"}}' | oc create -f -
+wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+chmod +x jq-linux64
+oc get scc privileged -o json | ./jq-linux64 '.users |= .+ ["system:serviceaccount:default:registry"]' | oc replace scc -f -
+oc get scc privileged -o json | ./jq-linux64 '.users |= .+ ["system:serviceaccount:default:router"]' | oc replace scc -f -
+oadm policy add-cluster-role-to-user cluster-admin admin
+
+echo -e "\n# Create docker registry"
+mkdir /opt/openshift-registry
+chown ${USER}.${USER} /opt/openshift-registry
+oadm registry --credentials=$OPENSHIFT/openshift.local.config/master/openshift-registry.kubeconfig --service-account=registry --mount-host=/opt/openshift-registry
+echo -e "\n# Create router"
+oadm router router --replicas=1 --credentials=$OPENSHIFT/openshift.local.config/master/openshift-router.kubeconfig --service-account=router
+
+curl -sk https://raw.githubusercontent.com/openshift/origin/master/examples/image-streams/image-streams-centos7.json | oc create -n openshift -f -
+
+echo -e "\n# Downloading gofabric8"
+cd /opt
+wget https://github.com/fabric8io/gofabric8/releases/download/v0.3.22/gofabric8-0.3.22-linux-amd64.tar.gz
+mkdir gofabric8
+tar zxfv gofabric8-0.3.22-linux-amd64.tar.gz -C gofabric8/
+
+echo -e "\n# Downloading fabric8 templates"
+curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/devops/distro/distro/2.2.95/distro-2.2.95-templates.zip
+unzip -d fabric8 fabric8.zip
+
+echo -e "\n# Installaing fabric8"
+/opt/gofabric8/gofabric8 deploy --namespace="default" --domain example.com --yes 
+/opt/gofabric8/gofabric8 secrets --yes
+
+echo -e "\n# Configure namespace"
+oc get oauthclient fabric8
+oc process -v DOMAIN=example.com -f /opt/fabric8/main/cd-pipeline-2.2.95.json | oc create -f -
+/opt/gofabric8/gofabric8 validate --namespace="default"
