@@ -122,9 +122,9 @@ curl -sk https://raw.githubusercontent.com/openshift/origin/master/examples/imag
 
 echo -e "\n# Downloading gofabric8"
 cd /opt
-wget https://github.com/fabric8io/gofabric8/releases/download/v0.3.22/gofabric8-0.3.22-linux-amd64.tar.gz
+wget https://github.com/fabric8io/gofabric8/releases/download/v0.4.9/gofabric8-0.4.9-linux-amd64.tar.gz
 mkdir gofabric8
-tar zxfv gofabric8-0.3.22-linux-amd64.tar.gz -C gofabric8/
+tar zxfv gofabric8-0.4.9-linux-amd64.tar.gz -C gofabric8/
 
 echo -e "\n# Downloading fabric8 templates"
 curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/devops/distro/distro/2.2.95/distro-2.2.95-templates.zip
