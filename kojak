@@ -120,66 +120,6 @@ echo -e "\n# Create router"
 oadm router router --replicas=1 --credentials=$OPENSHIFT/openshift.local.config/master/openshift-router.kubeconfig --service-account=router
 curl -sk https://raw.githubusercontent.com/openshift/origin/master/examples/image-streams/image-streams-centos7.json | oc create -n openshift -f -
 
-echo -e "# Mount nfs share" 
-[[ -f /etc/fstab.orig ]]; rm -f /etc/fstab
-cat /etc/fstab.orig > /etc/fstab
-echo -e "192.168.122.100:/home/registry\t/registry\t\tnfs4\tdefaults\t0 0" >> /etc/fstab
-mkdir /registry
-chown nfsnobody:nfsnobody /registry
-mount -a
-
-echo -e "# Configure sassion affinity"
-oc get -o yaml svc docker-registry | \
-sed 's/\(sessionAffinity:\s*\).*/\1ClientIP/' | oc replace -f -
-
-echo -e "# Create registry storage"
-cat << 'EOF' > registry-storage.yaml
-{
-  "apiVersion": "v1",
-  "kind": "PersistentVolume",
-  "metadata": {
-    "name": "registry-storage"
-  },
-  "spec": {
-    "capacity": {
-        "storage": "16Gi"
-        },
-    "accessModes": [ "ReadWriteMany" ],
-    "nfs": {
-        "path": "/home/registry",
-        "server": "192.168.122.100"
-    }
-  }
-}
-EOF
-oc create -f registry-storage.yaml
-rm -f registry-storage.yaml
-
-echo -e "# Claim registry storage"
-cat << 'EOF' > registry-claim.yaml
-{
-  "apiVersion": "v1",
-  "kind": "PersistentVolumeClaim",
-  "metadata": {
-    "name": "registry-claim"
-  },
-  "spec": {
-    "accessModes": [ "ReadWriteMany" ],
-    "resources": {
-      "requests": {
-        "storage": "16Gi"
-      }
-    }
-  }
-}
-EOF
-oc create -f registry-claim.yaml
-rm -f registry-claim.yaml
-
-echo -e "# Attach registry storage"
-oc volume dc/docker-registry --add --overwrite -t persistentVolumeClaim \
---claim-name=registry-claim --name=registry-storage
-
 echo -e "\n# Downloading gofabric8"
 cd /opt
 wget https://github.com/fabric8io/gofabric8/releases/download/v0.4.9/gofabric8-0.4.9-linux-amd64.tar.gz
