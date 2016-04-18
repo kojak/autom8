@@ -190,7 +190,7 @@ echo -e "\n# Downloading fabric8 templates"
 curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/devops/distro/distro/2.2.95/distro-2.2.95-templates.zip
 unzip -d fabric8 fabric8.zip
 
-echo -e "\n# Installing fabric8"
+echo -e "\n# Installaing fabric8"
 /opt/gofabric8/gofabric8 deploy --namespace="default" --domain example.com --yes 
 /opt/gofabric8/gofabric8 secrets --yes
 
@@ -198,3 +198,4 @@ echo -e "\n# Configure namespace"
 oc get oauthclient fabric8
 oc process -v DOMAIN=example.com -f /opt/fabric8/main/cd-pipeline-2.2.95.json | oc create -f -
 /opt/gofabric8/gofabric8 validate --namespace="default"
+
