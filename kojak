@@ -97,7 +97,7 @@ EOF
 rm -f /tmp/openshift.patch
 
 echo -e "\n# Initialising openshift"
-nohup $OPENSHIFT/openshift start &
+nohup $OPENSHIFT/openshift --cors-allowed-origins='.*' start &
 
 while ! timeout 1 bash -c "echo > /dev/tcp/localhost/8443"; do echo -e "# Retrying...please be patient" && sleep 12 ; done
 
