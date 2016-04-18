@@ -22,7 +22,7 @@
 set -x
 
 echo -e "\n# Installing packages"
-yum -y install docker git wget unzip net-tools bind-utils patch mlocate maven
+yum -y install docker git wget unzip net-tools bind-utils patch mlocate maven nfs-utils
 
 echo -e "\n# Patching docker"
 [[ -f "/etc/sysconfig/docker.orig" ]]; mv /etc/sysconfig/docker.orig /etc/sysconfig/docker
@@ -118,8 +118,67 @@ chown ${USER}.${USER} /opt/openshift-registry
 oadm registry --credentials=$OPENSHIFT/openshift.local.config/master/openshift-registry.kubeconfig --service-account=registry --mount-host=/opt/openshift-registry
 echo -e "\n# Create router"
 oadm router router --replicas=1 --credentials=$OPENSHIFT/openshift.local.config/master/openshift-router.kubeconfig --service-account=router
-
 curl -sk https://raw.githubusercontent.com/openshift/origin/master/examples/image-streams/image-streams-centos7.json | oc create -n openshift -f -
+
+echo -e "# Mount nfs share" 
+[[ -f /etc/fstab.orig ]]; rm -f /etc/fstab
+cat /etc/fstab.orig > /etc/fstab
+echo -e "192.168.122.100:/home/registry\t/registry\t\tnfs4\tdefaults\t0 0" >> /etc/fstab
+mkdir /registry
+chown nfsnobody:nfsnobody /registry
+mount -a
+
+echo -e "# Configure sassion affinity"
+oc get -o yaml svc docker-registry | \
+sed 's/\(sessionAffinity:\s*\).*/\1ClientIP/' | oc replace -f -
+
+echo -e "# Create registry storage"
+cat << 'EOF' > registry-storage.yaml
+{
+  "apiVersion": "v1",
+  "kind": "PersistentVolume",
+  "metadata": {
+    "name": "registry-storage"
+  },
+  "spec": {
+    "capacity": {
+        "storage": "16Gi"
+        },
+    "accessModes": [ "ReadWriteMany" ],
+    "nfs": {
+        "path": "/home/registry",
+        "server": "192.168.122.100"
+    }
+  }
+}
+EOF
+oc create -f registry-storage.yaml
+rm -f registry-storage.yaml
+
+echo -e "# Claim registry storage"
+cat << 'EOF' > registry-claim.yaml
+{
+  "apiVersion": "v1",
+  "kind": "PersistentVolumeClaim",
+  "metadata": {
+    "name": "registry-claim"
+  },
+  "spec": {
+    "accessModes": [ "ReadWriteMany" ],
+    "resources": {
+      "requests": {
+        "storage": "16Gi"
+      }
+    }
+  }
+}
+EOF
+oc create -f registry-claim.yaml
+rm -f registry-claim.yaml
+
+echo -e "# Attach registry storage"
+oc volume dc/docker-registry --add --overwrite -t persistentVolumeClaim \
+--claim-name=registry-claim --name=registry-storage
 
 echo -e "\n# Downloading gofabric8"
 cd /opt
@@ -131,7 +190,7 @@ echo -e "\n# Downloading fabric8 templates"
 curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/devops/distro/distro/2.2.95/distro-2.2.95-templates.zip
 unzip -d fabric8 fabric8.zip
 
-echo -e "\n# Installaing fabric8"
+echo -e "\n# Installing fabric8"
 /opt/gofabric8/gofabric8 deploy --namespace="default" --domain example.com --yes 
 /opt/gofabric8/gofabric8 secrets --yes
 
