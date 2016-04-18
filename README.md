@@ -4,15 +4,15 @@ Kojak Autom8 DevOps Circuit
 Virtual Machine Assumptions
 ---------------------------
 
-OS: CentOS 7
-Hostname: openshift.example.com
-IP Adress: 192.168.122.101
-Net Mask: 255.255.255.0
+1. OS: CentOS 7
+2. Hostname: openshift.example.com
+3. IP Adress: 192.168.122.101
+4. Subnet Mask: 255.255.255.0
 
 Installation Instructions
 -------------------------
 
-As the root user execute the command:
+As the root user execute the following command from the root users home directory:
 ```
 yum -y install git && mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./kojak
 ```
