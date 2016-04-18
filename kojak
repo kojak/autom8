@@ -22,7 +22,7 @@
 set -x
 
 echo -e "\n# Installing packages"
-yum -y install docker git wget unzip net-tools bind-utils patch mlocate maven nfs-utils
+yum -y install docker git wget unzip net-tools bind-utils patch mlocate maven
 
 echo -e "\n# Patching docker"
 [[ -f "/etc/sysconfig/docker.orig" ]]; mv /etc/sysconfig/docker.orig /etc/sysconfig/docker
