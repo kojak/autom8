@@ -103,6 +103,7 @@ while ! timeout 1 bash -c "echo > /dev/tcp/localhost/8443"; do echo -e "# Retryi
 
 echo -e "\n# Create service accounts for registry and router"
 oc login -u system:admin -n default
+oc project default
 echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"registry"}}' | oc create -f -
 echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"router"}}' | oc create -f -
 wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
