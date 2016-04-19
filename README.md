@@ -3,6 +3,8 @@ Kojak - "Koji in a box"
 
 Kojak is fully integrated DevOps pipeline that uses Openshift Origin and Fabric8 to deploy applications in the cloud.
 
+![GitHub Logo](/slides/01.png)
+
 Kojak started off as a collection of scripts which were used to autom8 the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments.  The scripts included in this repository can be used to create a complete DevOps circuit with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
  
 Tool Chain
