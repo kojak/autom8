@@ -21,6 +21,9 @@
 # Switch on Debugging
 #set -x
 
+# Check user priviledges
+[[ $(id -u) == 0 ]] || echo -e "\n# This script requires root priviledges to run"
+
 # Define logfile
 LOG="/root/autom8.log"
 
