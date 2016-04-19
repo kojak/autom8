@@ -19,9 +19,18 @@
 ########################################################################
 
 # Switch on Debugging
-set -x
+#set -x
 
-echo -e "\n# Kill openshift"
+# Define logfile
+LOG="/root/autom8.log"
+
+echo -e "########################################################################" >> $LOG
+echo -e "Autom8...Uninstalling Openshift Origin and Fabric8" >> $LOG
+echo -e "########################################################################\n" >> $LOG
+echo -e $(date) >> $LOG
+echo >> $LOG
+
+echo -e "# Kill openshift" >> $LOG
 pkill openshift
 
 COUNT=$(mount | grep tmpfs | wc -l)
@@ -31,10 +40,10 @@ while [ $COUNT -gt 0 ]; do
   COUNT=$[$COUNT-1]
 done
 
-echo -e "\n# Stop docker"
+echo -e "# Stop docker" >> $LOG
 systemctl stop docker
 
-echo -e "\n# Remove docker"
+echo -e "# Remove docker" >> $LOG
 rm -rf /opt/*
 rm -rf /var/lib/docker/*
 rm -rf .m2
