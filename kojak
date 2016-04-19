@@ -125,16 +125,16 @@ EOF
     cat > /var/named/122.168.192.zone << 'EOF'
 $ORIGIN 122.168.192.in-addr.arpa.
 $TTL 86400
-@       IN      SOA     openshift.example.com.      hostmaster.example.com. (
+@       IN      SOA     kojak.example.com.      hostmaster.example.com. (
                         2016032801 ; serial
                         21600      ; refresh after 6 hours
                         3600       ; retry after 1 hour
                         604800     ; expire after 1 week
                         86400 )    ; minimum TTL of 1 day
 ;
-@       IN      NS      openshift.example.com.
+@       IN      NS      kojak.example.com.
 ;
-101     IN      PTR     openshift.example.com.
+101     IN      PTR     kojak.example.com.
 ;
 101     IN      PTR     master01.example.com.
 101     IN      PTR     node01.example.com.
@@ -145,7 +145,7 @@ EOF
     cat > /var/named/example.com.zone << 'EOF'
 $ORIGIN example.com.
 $TTL 86400
-@               IN      SOA     openshift.example.com.      hostmaster.example.com. (
+@               IN      SOA     kojak.example.com.      hostmaster.example.com. (
                         2016041801 ; serial
                         21600      ; refresh after 6 hours
                         3600       ; retry after 1 hour
@@ -154,8 +154,8 @@ $TTL 86400
 ;
 ;
 
-                IN      NS      openshift.example.com.
-openshift           IN      A       192.168.122.101
+                IN      NS      kojak.example.com.
+kojak           IN      A       192.168.122.101
 
 *.example.com.  300 IN  A       192.168.122.101
 master01        IN      A       192.168.122.101
