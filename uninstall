@@ -30,6 +30,12 @@ echo -e "#######################################################################
 echo -e $(date) >> $LOG
 echo >> $LOG
 
+echo -e "# Remove containers" >> $LOG
+oc login -u system:admin
+oc delete all --all
+oc delete pv --all
+oc delete pvc --all
+
 echo -e "# Kill openshift" >> $LOG
 pkill openshift
 
