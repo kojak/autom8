@@ -1,7 +1,7 @@
 Kojak - "Koji in a box"
 =======================
 
-Kojak is fully integrated DevOps pipeline that uses Openshift Origin and Fabric8 to deploy applications in the cloud.
+Kojak is fully integrated DevOps circuit that uses Openshift Origin and Fabric8 to deploy applications in the cloud.
 
 ![GitHub Logo](/slides/00.png)
 
