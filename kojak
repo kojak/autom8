@@ -257,13 +257,13 @@ install_fabric8 () {
     curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/forge/distro/distro/2.2.153/distro-2.2.153-templates.zip
 	unzip -d fabric8 fabric8.zip
 
-	echo -e "# Installaing fabric8" >> $LOG
+	echo -e "# Installing fabric8" >> $LOG
 	/opt/gofabric8/gofabric8 deploy --namespace="default" --domain example.com --yes 
 	/opt/gofabric8/gofabric8 secrets --yes
 
 	echo -e "# Configure namespace" >> $LOG
 	oc get oauthclient fabric8
-	oc process -v DOMAIN=example.com -f /opt/fabric8/main/cd-pipeline-2.2.95.json | oc create -f -
+        oc process -v DOMAIN=example.com -f /opt/fabric8/main/console-2.2.101.json | oc create -f -
 	/opt/gofabric8/gofabric8 validate --namespace="default"
 }
 
