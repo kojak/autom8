@@ -254,7 +254,7 @@ install_fabric8 () {
 	tar zxfv gofabric8-0.4.9-linux-amd64.tar.gz -C gofabric8/
 
 	echo -e "# Downloading fabric8 templates" >> $LOG
-	curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/devops/distro/distro/2.2.95/distro-2.2.95-templates.zip
+    curl -o fabric8.zip http://repo1.maven.org/maven2/io/fabric8/forge/distro/distro/2.2.153/distro-2.2.153-templates.zip
 	unzip -d fabric8 fabric8.zip
 
 	echo -e "# Installaing fabric8" >> $LOG
