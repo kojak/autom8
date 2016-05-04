@@ -263,7 +263,7 @@ install_fabric8 () {
 
 	echo -e "# Configure namespace" >> $LOG
 	oc get oauthclient fabric8
-        oc process -v DOMAIN=example.com -f /opt/fabric8/main/console-2.2.101.json | oc create -f -
+        oc process -v DOMAIN=example.com -f /opt/fabric8/main/console-2.2.153.json | oc create -f -
 	/opt/gofabric8/gofabric8 validate --namespace="default"
 }
 
