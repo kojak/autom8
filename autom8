@@ -105,10 +105,9 @@ export PATH=$OPENSHIFT:$PATH
 export KUBECONFIG=$OPENSHIFT/openshift.local.config/master/admin.kubeconfig
 export CURL_CA_BUNDLE=$OPENSHIFT/openshift.local.config/master/ca.crt
 EOF
-
-}
 source /etc/profile.d/custom.sh
 source /etc/profile.d/openshift.sh
+}
 
 install_docker () {
     echo -e "# Patching docker" >> $LOG
