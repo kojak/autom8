@@ -206,12 +206,9 @@ $TTL 86400
                         604800     ; expire after 1 week
                         86400 )    ; minimum TTL of 1 day
 ;
-@       IN      NS      kojak.example.com.
+@       IN     NS      kojak.example.com.
 ;
 52     IN      PTR     kojak.example.com.
-;
-52     IN      PTR     master01.example.com.
-52     IN      PTR     node01.example.com.
 EOF
      
     echo -e "# Creating zone file" >> $LOG
@@ -231,8 +228,6 @@ $TTL 86400
 kojak           IN      A       192.168.122.101
 
 *.example.com.  300 IN  A       192.168.122.101
-master01        IN      A       192.168.122.101
-node01          IN      A       192.168.122.101
 EOF
     chown -R root:named /var/named
     systemctl enable named && systemctl start named
