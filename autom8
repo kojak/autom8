@@ -207,7 +207,7 @@ $TTL 86400
 ;
 @       IN     NS      kojak.example.com.
 ;
-52     IN      PTR     kojak.example.com.
+101     IN      PTR     kojak.example.com.
 EOF
      
     echo -e "# Creating zone file" >> $LOG
@@ -228,7 +228,7 @@ kojak           IN      A       192.168.122.101
 
 *.example.com.  300 IN  A       192.168.122.101
 EOF
-    chown -R root:named /var/named
+    chown -R root:named /var/named/*.zone
     systemctl enable named && systemctl start named
 
     echo -e "# Creating resolve file" >> $LOG
