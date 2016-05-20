@@ -28,7 +28,7 @@ echo -e "#######################################################################
 echo -e "Autom8...Uninstalling Openshift Origin and Fabric8"
 echo -e "########################################################################\n"
 
-echo -e "# Commencing cleanup.  Please be patient."
+echo -e "# Commencing cleanup...Please be patient."
 
 echo -e "# Stopping openshift..."
 systemctl stop openshift-origin
