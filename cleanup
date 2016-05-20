@@ -28,7 +28,9 @@ echo -e "#######################################################################
 echo -e "Autom8...Uninstalling Openshift Origin and Fabric8"
 echo -e "########################################################################\n"
 
-echo -e "# Stopping openshift"
+echo -e "# Commencing cleanup.  Please be patient."
+
+echo -e "# Stopping openshift..."
 systemctl stop openshift-origin
 
 COUNT=$(mount | grep tmpfs | wc -l)
@@ -38,13 +40,13 @@ while [ $COUNT -gt 0 ]; do
   COUNT=$[$COUNT-1]
 done
 
-echo -e "# Stopping docker"
+echo -e "# Stopping docker..."
 systemctl stop docker
 
-echo -e "# Remove docker"
+echo -e "# Remove docker..."
 rm -rf /opt/*
 rm -rf /var/lib/docker/*
 rm -rf .m2
 rm -rf /root/*.log
 
-echo -e "# Clean up completed..."
+echo -e "# Clean up completed."
