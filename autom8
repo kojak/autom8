@@ -50,7 +50,7 @@ update_system () {
 install_packages () {
     echo -e "# Installing packages..." >> $LOG
     [[ -f "/etc/yum.repos.d/rpmforge.repo" ]] || rpm -Uvh ftp://139.162.181.50/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-    yum -y install docker git wget unzip net-tools patch mlocate maven htop iftop curl tree
+    yum -y install git wget unzip net-tools patch mlocate maven htop iftop curl tree
 }
 
 create_profiles () {
@@ -113,25 +113,26 @@ setup_env () {
 }
 
 install_docker () {
-    echo -e "# Patching docker" >> $LOG
-    [[ -f "/etc/sysconfig/docker.orig" ]]; mv /etc/sysconfig/docker.orig /etc/sysconfig/docker
-    cp -p /etc/sysconfig/docker /etc/sysconfig/docker.orig
-    cat > /tmp/docker.patch << 'EOF'
---- /etc/sysconfig/docker	2015-12-10 17:57:32.000000000 -0500
-+++ /etc/sysconfig/docker	2016-03-31 02:28:46.835000000 -0400
-@@ -21,6 +21,7 @@
- # distributed, you can tell docker to not look for full authorization by
- # adding the registry to the INSECURE_REGISTRY line and uncommenting it.
- # INSECURE_REGISTRY='--insecure-registry'
-+INSECURE_REGISTRY='--insecure-registry 172.30.0.0/16'
- 
- # On an SELinux system, if you remove the --selinux-enabled option, you
- # also need to turn on the docker_transition_unconfined boolean.
+    echo -e "# Installing docker" >> $LOG
+    [[ ! -z "$(rpm -qa | grep docker-engine)" ]] || cat /etc/yum.repos.d/docker.repo <<-'EOF'
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
 EOF
-(cd / && patch -p0) < /tmp/docker.patch
-rm -f /tmp/docker.patch
 
+yum -y install docker-engine
+
+[[ -d "/etc/systemd/system/docker.service.d " ]] || mkdir -p /etc/systemd/system/docker.service.d && cat > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
+[Service] 
+ExecStart= 
+ExecStart=/usr/bin/docker daemon --storage-driver=overlay --insecure-registry 172.30.0.0/16 -H fd://
+EOF
+ 
 echo -e "# Initialising docker" >> $LOG
+systemctl daemon-reload
 systemctl enable docker
 systemctl restart docker
 
