@@ -31,10 +31,10 @@ echo -e "#######################################################################
 echo -e "# Stopping openshift"
 systemctl stop openshift-origin
 
-COUNT=$(mount | grep tmpfs | wc -l) > /dev/null
+COUNT=$(mount | grep tmpfs | wc -l)
 
 while [ $COUNT -gt 0 ]; do
-  umount tmpfs
+  umount tmpfs > /dev/null 2>&1  
   COUNT=$[$COUNT-1]
 done
 
