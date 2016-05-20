@@ -24,23 +24,12 @@
 # Check user priviledges
 [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root priviledges to run"
 
-# Define logfile
-LOG="/root/autom8.log"
-
-echo -e "########################################################################" > $LOG
+echo -e "########################################################################"
 echo -e "Autom8...Uninstalling Openshift Origin and Fabric8" >> $LOG
-echo -e "########################################################################\n" >> $LOG
-echo -e $(date) >> $LOG
-echo >> $LOG
+echo -e "########################################################################\n"
 
-echo -e "# Remove containers" >> $LOG
-oc login -u system:admin
-oc delete all --all
-oc delete pv --all
-oc delete pvc --all
-
-echo -e "# Kill openshift" >> $LOG
-pkill openshift
+echo -e "# Stopping openshift" >> $LOG
+systemctl stop openshift-origin
 
 COUNT=$(mount | grep tmpfs | wc -l)
 
@@ -56,3 +45,4 @@ echo -e "# Remove docker" >> $LOG
 rm -rf /opt/*
 rm -rf /var/lib/docker/*
 rm -rf .m2
+rm /root/*.log

@@ -25,7 +25,7 @@ set -x
 [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
 
 # Define logfile
-LOG="/root/install.log"
+LOG="/root/openshift.log"
 
 echo -e "########################################################################" > $LOG
 echo -e "Installing System..." >> $LOG
@@ -226,27 +226,6 @@ EOF
 
 }
 
-install_fabric8 () {
-
-    echo -e "# Downloading gofabric8" >> $LOG
-    cd /opt
-    mkdir gofabric8
-    [[ -f "/tmp/gofabric8-0.4.9-linux-amd64.tar.gz" ]] || \
-    wget https://github.com/fabric8io/gofabric8/releases/download/v0.4.9/gofabric8-0.4.9-linux-amd64.tar.gz -P /tmp
-    tar zxfv /tmp/gofabric8-0.4.9-linux-amd64.tar.gz -C /opt/gofabric8/
-
-    echo -e "# Installing fabric8" >> $LOG
-    /opt/gofabric8/gofabric8 deploy --yes --namespace="default" --domain apps.example.com  
-    /opt/gofabric8/gofabric8 secrets --yes
-    oc get oauthclient fabric8
-
-    echo -e "# Configure cd-pipeline" >> $LOG
-    /opt/gofabric8/gofabric8 pull cd-pipeline 
-
-    echo -e "# Validate installaiton" >> $LOG
-    /opt/gofabric8/gofabric8 validate --namespace="default"
-}
-
 disable_firewall
 update_system
 install_packages
@@ -255,5 +234,3 @@ setup_env
 install_docker
 create_resolve
 install_openshift
-install_fabric8
-
