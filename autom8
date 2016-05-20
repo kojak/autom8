@@ -53,7 +53,7 @@ install_packages () {
     yum -y install docker git wget unzip net-tools patch mlocate maven htop iftop curl tree
 }
 
-setup_env () {
+create_profiles () {
     echo "# Creating profile..." >> $LOG
     cat > /etc/profile.d/custom.sh << 'EOF'
 # Prompt colors
@@ -105,8 +105,11 @@ export PATH=$OPENSHIFT:$PATH
 export KUBECONFIG=$OPENSHIFT/openshift.local.config/master/admin.kubeconfig
 export CURL_CA_BUNDLE=$OPENSHIFT/openshift.local.config/master/ca.crt
 EOF
-source /etc/profile.d/custom.sh
-source /etc/profile.d/openshift.sh
+}
+
+setup_env () {
+    source /etc/profile.d/custom.sh
+    source /etc/profile.d/openshift.sh
 }
 
 install_docker () {
@@ -139,7 +142,6 @@ docker pull openshift/origin-deployer:$OPENSHIFT_VERSION
 docker pull openshift/origin-docker-registry:$OPENSHIFT_VERSION
 docker pull openshift/origin-haproxy-router:$OPENSHIFT_VERSION
 }
-
 
 create_resolve () {
 echo -e "# Creating resolve file" >> $LOG
@@ -247,6 +249,7 @@ install_fabric8 () {
 disable_firewall
 update_system
 install_packages
+create_profiles
 setup_env
 install_docker
 create_resolve
