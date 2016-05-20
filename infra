@@ -186,9 +186,10 @@ $TTL 86400
 ;
 
                 IN      NS      infra.example.com.
-infra           IN      A       192.168.122.100
 
 *.apps.example.com.  300 IN  A       192.168.122.101
+
+infra           IN      A       192.168.122.100
 devops		IN  	A  	192.168.122.101
 EOF
     chown -R root:named /var/named/*.zone
