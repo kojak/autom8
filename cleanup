@@ -46,3 +46,5 @@ rm -rf /opt/*
 rm -rf /var/lib/docker/*
 rm -rf .m2
 rm -rf /root/*.log
+
+echo -e "# Clean up completed..."
