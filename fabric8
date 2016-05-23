@@ -52,7 +52,7 @@ EOF
     tar zxfv /tmp/gofabric8-0.4.9-linux-amd64.tar.gz -C /opt/gofabric8/
 
     echo -e "# Installing fabric8" >> $LOG
-    /opt/gofabric8/gofabric8 deploy --yes --namespace="default" --domain apps.example.com
+    /opt/gofabric8/gofabric8 deploy --yes --namespace="default" --domain example.com
     oc get oauthclient fabric8
 
     echo -e "# Configure cd-pipeline" >> $LOG
