@@ -112,6 +112,10 @@ setup_env () {
     source /etc/profile.d/openshift.sh
 }
 
+add_hostname () {
+    echo -e "192.168.122.101\tdevops devops.example.com" >> /etc/hosts
+}
+
 install_docker () {
     echo -e "# Installing docker" >> $LOG
     cat > /etc/yum.repos.d/docker.repo <<-'EOF'
@@ -265,6 +269,7 @@ update_system
 install_packages
 create_profiles
 setup_env
+add_hostname
 install_docker
 create_resolve
 install_openshift
