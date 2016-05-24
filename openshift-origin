@@ -182,6 +182,8 @@ EOF
     $OPENSHIFT/openshift start --write-config=openshift.local.config 
     sed -i 's/router.default.svc.cluster.local/example.com/' \
     $OPENSHIFT/openshift.local.config/master/master-config.yaml
+    sed -i 's/0.0.0.0:53/127.0.0.1:8053/' \
+    $OPENSHIFT/openshift.local.config/master/master-config.yaml
     chmod +r $OPENSHIFT/openshift.local.config/master/admin.kubeconfig
     chmod +r $OPENSHIFT/openshift.local.config/master/openshift-registry.kubeconfig
     chmod +r $OPENSHIFT/openshift.local.config/master/openshift-router.kubeconfig
