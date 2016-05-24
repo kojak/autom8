@@ -113,7 +113,7 @@ setup_env () {
 }
 
 add_hostname () {
-    echo -e "192.168.122.101\tdevops devops.example.com" >> /etc/hosts
+    [[ ! -z $(grep devops /etc/hosts) ]] || echo -e "192.168.122.101\tdevops devops.example.com" >> /etc/hosts
 }
 
 install_docker () {
