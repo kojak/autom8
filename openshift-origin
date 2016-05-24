@@ -114,7 +114,7 @@ setup_env () {
 
 install_docker () {
     echo -e "# Installing docker" >> $LOG
-    [[ ! -z "$(rpm -qa | grep docker-engine)" ]] || cat /etc/yum.repos.d/docker.repo <<-'EOF'
+    cat > /etc/yum.repos.d/docker.repo <<-'EOF'
 [dockerrepo]
 name=Docker Repository
 baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
