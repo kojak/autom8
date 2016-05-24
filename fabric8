@@ -28,7 +28,7 @@ set -x
 LOG="/root/fabric8.log"
 
 echo -e "########################################################################" > $LOG
-echo -e "Installing System..." >> $LOG
+echo -e "Installing Fabric8..." >> $LOG
 echo -e "########################################################################\n" >> $LOG
 echo -e $(date) >> $LOG
 echo >> $LOG

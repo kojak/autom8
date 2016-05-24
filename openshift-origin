@@ -28,7 +28,7 @@ set -x
 LOG="/root/openshift.log"
 
 echo -e "########################################################################" > $LOG
-echo -e "Installing System..." >> $LOG
+echo -e "Installing Openshift Origin..." >> $LOG
 echo -e "########################################################################\n" >> $LOG
 echo -e $(date) >> $LOG
 echo >> $LOG
