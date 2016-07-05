@@ -140,12 +140,12 @@ systemctl daemon-reload
 systemctl enable docker
 systemctl restart docker
 
-docker pull openshift/origin-pod:$OPENSHIFT_VERSION
-docker pull openshift/origin-sti-builder:$OPENSHIFT_VERSION
-docker pull openshift/origin-docker-builder:$OPENSHIFT_VERSION
-docker pull openshift/origin-deployer:$OPENSHIFT_VERSION
-docker pull openshift/origin-docker-registry:$OPENSHIFT_VERSION
-docker pull openshift/origin-haproxy-router:$OPENSHIFT_VERSION
+docker pull openshift/origin-pod
+docker pull openshift/origin-sti-builder
+docker pull openshift/origin-docker-builder
+docker pull openshift/origin-deployer
+docker pull openshift/origin-docker-registry
+docker pull openshift/origin-haproxy-router
 }
 
 create_resolve () {
