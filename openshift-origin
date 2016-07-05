@@ -100,6 +100,7 @@ EOF
 
     cat > /etc/profile.d/openshift.sh << 'EOF'
 export OPENSHIFT=/opt/openshift-origin-server-v1.3.0-alpha
+export OPENSHIFT_CLIENT=/opt/openshift-origin-client-tools-v1.3.0-alpha
 export OPENSHIFT_VERSION=v1.3.0-alpha
 export PATH=$OPENSHIFT:$PATH
 export KUBECONFIG=$OPENSHIFT/openshift.local.config/master/admin.kubeconfig
@@ -233,6 +234,18 @@ EOF
 
 }
 
+install_openshift_client () {
+   
+    echo -e "# Installing openshift client" >> ${LOG}
+    mkdir /opt/openshift-origin-client-tools-v1.3.0-alpha
+    [[ -f "/tmp/openshift-origin-client-tools-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz" ]] || \
+    wget https://github.com/openshift/origin/releases/download/v1.3.0-alpha.2/openshift-origin-server-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz -P /tmp
+ 
+    wget https://github.com/openshift/origin/releases/download/v1.3.0-alpha.2/openshift-origin-client-tools-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz -P /tmp
+    tar -zxvf /tmp/openshift-origin-client-tools-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz -C /opt/openshift-origin-server-v1.3.0-alpha/ --strip-components 1
+
+}
+
 create_dnsmasq () {
     echo -e "# Creating dnsmasq file" >> ${LOG}
     [[ -f "/etc/dnsmasq.conf.orig" ]] || cp /etc/dnsmasq.conf /etc/dnsmasq.conf.orig 
@@ -273,4 +286,6 @@ add_hostname
 install_docker
 create_resolve
 install_openshift
+install_openshift_client
 create_dnsmasq
+
