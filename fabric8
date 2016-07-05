@@ -27,38 +27,38 @@ set -x
 # Define logfile
 LOG="/root/fabric8.log"
 
-echo -e "########################################################################" > $LOG
-echo -e "Installing Fabric8..." >> $LOG
-echo -e "########################################################################\n" >> $LOG
-echo -e $(date) >> $LOG
-echo >> $LOG
+echo -e "########################################################################" > ${LOG}
+echo -e "Installing Fabric8..." >> ${LOG}
+echo -e "########################################################################\n" >> ${LOG}
+echo -e $(date) >> ${LOG}
+echo >> ${LOG}
 
 install_fabric8 () {
     
     [[ -f "/etc/profile.d/openshift" ]] || \ cat > /etc/profile.d/openshift.sh << 'EOF'
-export OPENSHIFT=/opt/openshift-origin-v1.2
-export OPENSHIFT_VERSION=v1.2.0-rc1
+export OPENSHIFT=/opt/openshift-origin-server-v1.3.0-alpha
+export OPENSHIFT_VERSION=v1.3.0-alpha
 export PATH=$OPENSHIFT:$PATH
 export KUBECONFIG=$OPENSHIFT/openshift.local.config/master/admin.kubeconfig
 export CURL_CA_BUNDLE=$OPENSHIFT/openshift.local.config/master/ca.crt
 EOF
 
     source /etc/profile.d/openshift
-    echo -e "# Downloading gofabric8" >> $LOG
+    echo -e "# Downloading gofabric8" >> ${LOG}
     cd /opt
     mkdir gofabric8
-    [[ -f "/tmp/gofabric8-0.4.9-linux-amd64.tar.gz" ]] || \
-    wget https://github.com/fabric8io/gofabric8/releases/download/v0.4.9/gofabric8-0.4.9-linux-amd64.tar.gz -P /tmp
-    tar zxfv /tmp/gofabric8-0.4.9-linux-amd64.tar.gz -C /opt/gofabric8/
+    [[ -f "/tmp/gofabric8-0.4.31-linux-amd64.tar.gz" ]] || \
+    wget https://github.com/fabric8io/gofabric8/releases/download/v0.4.31/gofabric8-0.4.31-linux-amd64.tar.gz -P /tmp
+    tar zxfv /tmp/gofabric8-0.4.31-linux-amd64.tar.gz -C /opt/gofabric8/
 
-    echo -e "# Installing fabric8" >> $LOG
+    echo -e "# Installing fabric8" >> ${LOG}
     /opt/gofabric8/gofabric8 deploy --yes --namespace="default" --domain example.com
     oc get oauthclient fabric8
 
-    echo -e "# Configure cd-pipeline" >> $LOG
+    echo -e "# Configure cd-pipeline" >> ${LOG}
     /opt/gofabric8/gofabric8 pull cd-pipeline
 
-    echo -e "# Validate installaiton" >> $LOG
+    echo -e "# Validate installaiton" >> ${LOG}
     /opt/gofabric8/gofabric8 validate --namespace="default"
 }
 
