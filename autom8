@@ -27,11 +27,11 @@ set -x
 # Define logfile
 LOG="/root/autom8.log"
 
-echo -e "########################################################################" > $LOG
-echo -e "Installing System..." >> $LOG
-echo -e "########################################################################\n" >> $LOG
-echo -e $(date) >> $LOG
-echo >> $LOG
+echo -e "########################################################################" > ${LOG}
+echo -e "Installing System..." >> ${LOG}
+echo -e "########################################################################\n" >> ${LOG}
+echo -e $(date) >> ${LOG}
+echo >> ${LOG}
 
 # Execution statements logicaly grouped into functions.
 
