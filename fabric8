@@ -35,7 +35,7 @@ echo >> ${LOG}
 
 install_fabric8 () {
     
-    [[ -f "/etc/profile.d/openshift" ]] || \ cat > /etc/profile.d/openshift.sh << 'EOF'
+    [[ -f "/etc/profile.d/openshift" ]] || cat > /etc/profile.d/openshift.sh << 'EOF'
 export OPENSHIFT=/opt/openshift-origin-server-v1.3.0-alpha
 export OPENSHIFT_VERSION=v1.3.0-alpha
 export PATH=$OPENSHIFT:$PATH
