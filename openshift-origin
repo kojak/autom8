@@ -164,7 +164,7 @@ install_openshift () {
     mkdir /opt/openshift-origin-server-v1.3.0-alpha
     [[ -f "/tmp/openshift-origin-server-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz" ]] || \
     wget https://github.com/openshift/origin/releases/download/v1.3.0-alpha.2/openshift-origin-server-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz -P /tmp
-    tar -zxvf /tmp/openshift-origin-server-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz -C /opt/openshift-origin-v1.2/ --strip-components 1
+    tar -zxvf /tmp/openshift-origin-server-v1.3.0-alpha.2-983578e-linux-64bit.tar.gz -C /opt/openshift-origin-server-v1.3.0-alpha/ --strip-components 1
 
     cat > /etc/systemd/system/openshift-origin.service << 'EOF'
 [Unit]
