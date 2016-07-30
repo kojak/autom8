@@ -114,6 +114,8 @@ export FABRIC8=/opt/gofabric8/
 export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
+export KUBERNETES_DOMAIN=example.com
+export DOCKER_HOST=tcp://example.com:2375
 EOF
 }
 
