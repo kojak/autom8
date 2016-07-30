@@ -47,7 +47,7 @@ echo -e "# Remove docker..."
 rm -rf /opt/*
 rm -rf /var/lib/docker/*
 rm -rf /var/lib/openshift/*
-rm -rf .m2
+rm -rf ~/.m2
 rm -rf /root/*.log
 rm -rf /etc/openshift
 
