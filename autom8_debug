@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+#
+# Copyright (C) 2016 Xenith Consulting Limited
+# Author: Salim Badakhchani <salimb@xenithconsulting.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+########################################################################
+
+#!/bin/bash
+
+source ./devops
+
+# Call functions interactively
+
+config_network
+read
+disable_firewall
+read
+update_system
+read
+install_packages
+read
+create_profiles
+read
+setup_env
+read
+create_resolve
+read
+add_hostname
+read
+install_docker
+read
+patch_docker
+read
+initialise_docker
+read
+install_openshift_client
+read
+install_openshift
+read
+patch_openshift
+read
+config_openshift
+read
+initialise_openshift
+read
+create_users
+read
+install_fabric8
+read
+create_routes
+read
+create_registry
+read
+post_install
+

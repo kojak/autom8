@@ -31,7 +31,7 @@ echo -e "#######################################################################
 echo -e "# Commencing cleanup...Please be patient."
 
 echo -e "# Stopping openshift..."
-systemctl stop openshift-origin
+systemctl stop openshift
 
 COUNT=$(mount | grep tmpfs | wc -l)
 
@@ -46,7 +46,10 @@ systemctl stop docker
 echo -e "# Remove docker..."
 rm -rf /opt/*
 rm -rf /var/lib/docker/*
+rm -rf /var/lib/openshift/*
 rm -rf .m2
 rm -rf /root/*.log
+rm -rf /etc/openshift
 
 echo -e "# Clean up completed."
+
