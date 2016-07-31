@@ -326,10 +326,11 @@ install_fabric8() {
 
     echo -e "# Installing fabric8..." >> ${LOG}
     gofabric8 deploy --yes --namespace="default" --domain example.com
+    gofabric8 secrets --yes
+    gofabric8 routes --yes
+    gofabric8 pull cd-pipeline
     oc get oauthclient fabric8
 
-    echo -e "# Configuring cd-pipeline..." >> ${LOG}
-    gofabric8 pull cd-pipeline
 }
 
 create_routes() {
