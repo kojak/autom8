@@ -178,7 +178,10 @@ initialise_docker() {
     systemctl daemon-reload
     systemctl enable docker
     systemctl restart docker
+}
 
+pull_images() {
+    echo -e "# Pull docker images..." >> ${LOG}
     docker pull openshift/origin-pod
     docker pull openshift/origin-sti-builder
     docker pull openshift/origin-docker-builder
