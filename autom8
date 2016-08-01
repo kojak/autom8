@@ -378,6 +378,9 @@ add_hostname
 install_docker
 patch_docker
 initialise_docker 
+
+sleep 30
+
 pull_images
 install_openshift_client
 install_openshift
