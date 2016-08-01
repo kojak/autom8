@@ -159,6 +159,22 @@ patch_docker() {
     echo -e "# Patching docker..." >> ${LOG}
     cp -p /usr/lib/systemd/system/docker.service /usr/lib/systemd/system/docker.service.orig
     cat > /usr/lib/systemd/system/docker.service << 'EOF'
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network.target docker.socket
+Requires=docker.socket
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/docker daemon -H fd://
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target
 EOF
     [[ -d "/etc/systemd/system/docker.service.d" ]] || mkdir -p /etc/systemd/system/docker.service.d
     cat  > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
