@@ -180,6 +180,17 @@ initialise_docker() {
     systemctl restart docker
 }
 
+pull_images() {
+    echo -e "# Pull docker images..." >> ${LOG}
+    docker pull openshift/origin-pod
+    docker pull openshift/origin-sti-builder
+    docker pull openshift/origin-docker-builder
+    docker pull openshift/origin-deployer
+    docker pull openshift/origin-docker-registry
+    docker pull openshift/origin-haproxy-router
+    docker pull prom/haproxy-exporter
+}
+
 install_openshift_client() {
     echo -e "# Installing openshift client..." >> ${LOG}
     source /etc/profile.d/kojak.sh
@@ -308,17 +319,6 @@ create_users() {
     oc adm policy add-cluster-role-to-group cluster-reader system:serviceaccounts
 }
 
-pull_images() {
-    echo -e "# Pull docker images..." >> ${LOG}
-    docker pull openshift/origin-pod
-    docker pull openshift/origin-sti-builder
-    docker pull openshift/origin-docker-builder
-    docker pull openshift/origin-deployer
-    docker pull openshift/origin-docker-registry
-    docker pull openshift/origin-haproxy-router
-    docker pull prom/haproxy-exporter
-}
-
 install_fabric8() {
     echo -e "# Downloading gofabric8..." >> ${LOG}
     source /etc/profile.d/kojak.sh
@@ -375,14 +375,15 @@ add_hostname
 install_docker
 patch_docker
 initialise_docker 
+pull_images
 install_openshift_client
 install_openshift
 patch_openshift
 config_openshift
 initialise_openshift
 create_users
-pull_images
 install_fabric8
 create_routes
 create_registry
 post_install
+
