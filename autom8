@@ -152,7 +152,7 @@ gpgcheck=1
 gpgkey=https://yum.dockerproject.org/gpg
 EOF
 
-    yum -y install docker-engine-selinux
+    yum -y install docker
 }
 
 patch_docker() {
