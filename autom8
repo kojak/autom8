@@ -273,6 +273,10 @@ EOF
 config_openshift() {
     echo -e "# Configuring openshift..." >> ${LOG}
     source /etc/profile.d/kojak.sh
+    curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/openshift/helm-v0.1.0+c9de5e9-linux-amd64.zip
+    cd /opt/openshift/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
+    helm update
+    helm repo add fabric8 https://github.com/fabric8io/charts.git
     mkdir -p /var/lib/openshift/openshift.local.manifests
     pushd /var/lib/openshift
     cat <<EOF >> /var/lib/openshift/openshift.local.config/node-192.168.122.100/node-config.yaml
