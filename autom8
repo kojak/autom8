@@ -306,7 +306,6 @@ EOF
 create_users() {
     echo -e "# Creating user roles..." >> ${LOG}
     source /etc/profile.d/custom.sh
-    while true; do curl -k -s -f -o /dev/null --connect-timeout 1 https://localhost:8443/healthz/ready && break || sleep 1 ; done
     oc adm policy add-cluster-role-to-user cluster-admin admin
     oc adm policy add-cluster-role-to-group cluster-reader system:serviceaccounts
 }
