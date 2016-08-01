@@ -80,11 +80,22 @@ alias p='ps -A | grep'
 alias g='gvim'
 
 # Configure bash history 
-HISTSIZE='1000000'
-HISTIGNORE=' *:&:?:??'
-HISTCONTROL='ignoreboth:erasedups'
+export HISTSIZE='1000000'
+export HISTIGNORE=' *:&:?:??'
+export HISTCONTROL='ignoreboth:erasedups'
 
-export HISTSIZE HISTIGNORE HISTCONTROL
+# Configure tooling
+export OPENSHIFT=/var/lib/openshift
+export OPENSHIFT_VERSION=v1.2.1-5e723f6
+export OPENSHIFT_SERVER=/opt/openshift-origin-server-${OPENSHIFT_VERSION}
+export OPENSHIFT_CLIENT=/opt/openshift-origin-client-tools-${OPENSHIFT_VERSION}
+export FABRIC8=/opt/gofabric8/
+export HELM=/opt/helm/
+export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${HELM}:${PATH}
+export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
+export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
+export KUBERNETES_DOMAIN=example.com
+export DOCKER_HOST=tcp://192.168.122.100:2375
 
 # Turn on bash history options
 shopt -s histappend histreedit histverify
@@ -105,25 +116,9 @@ history_sync() {
 PROMPT_COMMAND=history_sync
 EOF
 
-    cat > /etc/profile.d/kojak.sh << 'EOF'
-export OPENSHIFT=/var/lib/openshift
-export OPENSHIFT_VERSION=v1.2.1-5e723f6
-export OPENSHIFT_SERVER=/opt/openshift-origin-server-${OPENSHIFT_VERSION}
-export OPENSHIFT_CLIENT=/opt/openshift-origin-client-tools-${OPENSHIFT_VERSION}
-export FABRIC8=/opt/gofabric8/
-export HELM=/opt/helm/
-export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${HELM}:${PATH}
-export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
-export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
-export KUBERNETES_DOMAIN=example.com
-export DOCKER_HOST=tcp://192.168.122.100:2375
-EOF
-}
-
 setup_env() {
     echo -e "# Setting up environment..." >> ${LOG}
     source /etc/profile.d/custom.sh
-    source /etc/profile.d/kojak.sh
 }
 
 create_resolve() {
@@ -183,6 +178,7 @@ initialise_docker() {
 
 pull_images() {
     echo -e "# Pull docker images..." >> ${LOG}
+    source /etc/profile.d/custom.sh
     docker pull openshift/origin-pod
     docker pull openshift/origin-sti-builder
     docker pull openshift/origin-docker-builder
@@ -194,7 +190,7 @@ pull_images() {
 
 install_openshift_client() {
     echo -e "# Installing openshift client..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     mkdir ${OPENSHIFT_CLIENT}
     [[ -f "/tmp/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz" ]] || \
     wget https://github.com/openshift/origin/releases/download/v1.2.1/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz -P /tmp
@@ -203,7 +199,7 @@ install_openshift_client() {
 
 install_openshift() {
     echo -e "# Installing openshift..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     mkdir ${OPENSHIFT}
     mkdir ${OPENSHIFT_SERVER}
     [[ -f "/tmp/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz" ]] || \
@@ -226,7 +222,7 @@ EOF
 
 patch_openshift() {
     echo -e "# Patching openshift..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     cd ${OPENSHIFT}
     ${OPENSHIFT_SERVER}/openshift start --write-config=openshift.local.config 
     [[ -f "${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig" ]]; mv \
@@ -273,7 +269,7 @@ EOF
 
 initialise_openshift() {
     echo -e "# Initialising openshift..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     systemctl daemon-reload
     systemctl enable openshift.service
     systemctl start openshift.service
@@ -293,7 +289,7 @@ initialise_openshift() {
 
 config_openshift() {
     echo -e "# Configuring openshift..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     mkdir /opt/helm
     curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/helm/helm-v0.1.0+c9de5e9-linux-amd64.zip
     cd /opt/helm/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
@@ -315,7 +311,7 @@ EOF
 
 create_users() {
     echo -e "# Creating user roles..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     while true; do curl -k -s -f -o /dev/null --connect-timeout 1 https://localhost:8443/healthz/ready && break || sleep 1 ; done
     oc adm policy add-cluster-role-to-user cluster-admin admin
     oc adm policy add-cluster-role-to-group cluster-reader system:serviceaccounts
@@ -323,7 +319,7 @@ create_users() {
 
 install_fabric8() {
     echo -e "# Downloading gofabric8..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     cd /opt
     mkdir gofabric8
     [[ -f "/tmp/gofabric8-0.4.35-linux-amd64.tar.gz" ]] || \
@@ -341,7 +337,7 @@ install_fabric8() {
 
 create_routes() {
     echo -e "# Creating routes..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     oadm policy add-scc-to-user hostnetwork -z router
     oadm router --create --service-account=router --expose-metrics
     until oc get pods -l openshift.io/deployer-pod-for.name=router-1 | grep -m 1 "Running"; do sleep 1 ; done
@@ -354,14 +350,14 @@ create_routes() {
 
 create_registry() {
     echo -e "# Creating the registry..." >> {LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     oadm policy add-scc-to-user privileged -z registry 
     oadm registry --service-account=registry --mount-host=/opt/openshift-registry
 }
 
 post_install() {
     echo -e "# Validate installaiton..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
+    source /etc/profile.d/custom.sh
     gofabric8 validate --namespace="default"
     echo -e "# Installation complete!!!" >> ${LOG}
 }
