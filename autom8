@@ -111,7 +111,8 @@ export OPENSHIFT_VERSION=v1.2.1-5e723f6
 export OPENSHIFT_SERVER=/opt/openshift-origin-server-${OPENSHIFT_VERSION}
 export OPENSHIFT_CLIENT=/opt/openshift-origin-client-tools-${OPENSHIFT_VERSION}
 export FABRIC8=/opt/gofabric8/
-export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
+export HELM=/opt/helm/
+export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${HELM}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
 export KUBERNETES_DOMAIN=example.com
@@ -273,8 +274,8 @@ EOF
 config_openshift() {
     echo -e "# Configuring openshift..." >> ${LOG}
     source /etc/profile.d/kojak.sh
-    curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/gofabric8/helm-v0.1.0+c9de5e9-linux-amd64.zip
-    cd /opt/openshift/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
+    curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/helm/helm-v0.1.0+c9de5e9-linux-amd64.zip
+    cd /opt/helm/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
     helm update
     helm repo add fabric8 https://github.com/fabric8io/charts.git
     mkdir -p /var/lib/openshift/openshift.local.manifests
