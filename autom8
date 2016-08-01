@@ -171,13 +171,6 @@ patch_docker() {
  # Having non-zero Limit*s causes performance problems due to accounting overhead
  # in the kernel. We recommend using cgroups to do container-local accounting.
 EOF
-    [[ -d "/etc/systemd/system/docker.service.d" ]] || mkdir -p /etc/systemd/system/docker.service.d
-    cat  > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
-[Service]
-ExecStart=
-ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:2375 --selinux-enabled --insecure-registry=172.0.0.0/8 --log-level=warn
->>>>>>> 4db318eb102b34e4eaddca48bb821caad2a1a7ce
-EOF
 }
     
 initialise_docker() { 
