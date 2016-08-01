@@ -275,6 +275,9 @@ EOF
 initialise_openshift() {
     echo -e "# Initialising openshift..." >> ${LOG}
     source /etc/profile.d/custom.sh
+    mkdir /etc/openshift
+    htpasswd -cb /etc/openshift/users.htpasswd admin admin
+
     systemctl daemon-reload
     systemctl enable openshift.service
     systemctl start openshift.service
@@ -310,8 +313,6 @@ EOF
     sed -i 's|^podManifestConfig: null|podManifestConfig:\\n  path: /var/lib/openshift/openshift.local.manifests\\n  fileCheckIntervalSeconds: 10|' /var/lib/openshift/openshift
     popd
     restorecon -Rv /var/lib/openshift
-    mkdir /etc/openshift
-    htpasswd -cb /etc/openshift/users.htpasswd admin admin
 }
 
 create_users() {
