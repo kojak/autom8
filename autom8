@@ -311,7 +311,7 @@ pull_images() {
     docker pull openshift/origin-docker-builder
     docker pull openshift/origin-deployer
     docker pull openshift/origin-docker-registry
-    docker pull openshift/origin-haproxy-router
+    docker pull openshift/origin-haproxy-router:v1.2.1
     docker pull prom/haproxy-exporter
 }
 
