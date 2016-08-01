@@ -373,6 +373,7 @@ setup_env
 create_resolve
 add_hostname
 install_docker
+pull_images
 patch_docker
 initialise_docker 
 install_openshift_client
