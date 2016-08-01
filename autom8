@@ -337,7 +337,7 @@ create_routes() {
     echo -e "# Creating routes..." >> ${LOG}
     source /etc/profile.d/kojak.sh
     oadm policy add-scc-to-user hostnetwork -z router
-    oc adm router --create --service-account=router --expose-metrics
+    oadm router --create --service-account=router --expose-metrics
     until oc get pods -l openshift.io/deployer-pod-for.name=router-1 | grep -m 1 "Running"; do sleep 1 ; done
     oc annotate service router prometheus.io/port=9101
     oc annotate service router prometheus.io/scheme=http
@@ -349,8 +349,6 @@ create_routes() {
 create_registry() {
     echo -e "# Creating the registry..." >> {LOG}
     source /etc/profile.d/kojak.sh
-    mkdir /var/lib/openshift-registry
-    chcon -Rt svirt_sandbox_file_t /opt/openshift-registry
     oadm policy add-scc-to-user privileged -z registry 
     oadm registry --service-account=registry --mount-host=/opt/openshift-registry
 }
