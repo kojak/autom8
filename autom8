@@ -184,13 +184,18 @@ initialise_docker() {
 pull_images() {
     echo -e "# Pull docker images..." >> ${LOG}
     source /etc/profile.d/custom.sh
-    docker pull openshift/origin-pod
-    docker pull openshift/origin-sti-builder
-    docker pull openshift/origin-docker-builder
-    docker pull openshift/origin-deployer
-    docker pull openshift/origin-docker-registry
-    docker pull openshift/origin-haproxy-router
-    docker pull prom/haproxy-exporter
+    OUTPUT=$(docker info)
+    MESSAGE="Cannot connect to the Docker daemon. Is the docker daemon running on this host?"
+    while [ "$OUTPUT" != "$MESSAGE" ]; do
+        sleep 10
+        docker pull openshift/origin-pod
+        docker pull openshift/origin-sti-builder
+        docker pull openshift/origin-docker-builder
+        docker pull openshift/origin-deployer
+        docker pull openshift/origin-docker-registry
+        docker pull openshift/origin-haproxy-router
+        docker pull prom/haproxy-exporter
+    done
 }
 
 install_openshift_client() {
@@ -378,9 +383,6 @@ add_hostname
 install_docker
 patch_docker
 initialise_docker 
-
-sleep 30
-
 pull_images
 install_openshift_client
 install_openshift
