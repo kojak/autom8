@@ -154,7 +154,7 @@ EOF
 patch_docker() {
     echo -e "# Patching docker..." >> ${LOG}
     [[ -f "/usr/lib/systemd/system/docker.service.orig" ]]; mv \
-    /usr/lib/systemd/system/docker.service /usr/lib/systemd/system/docker.service.orig
+    /usr/lib/systemd/system/docker.service.orig /usr/lib/systemd/system/docker.service
     cp -p /usr/lib/systemd/system/docker.service /usr/lib/systemd/system/docker.service.orig
     cat > /tmp/docker.patch << 'EOF'
 --- /usr/lib/systemd/system/docker.service    2016-07-27 19:35:00.000000000 -0400
