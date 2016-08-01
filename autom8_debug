@@ -52,9 +52,9 @@ install_openshift
 read
 patch_openshift
 read
-config_openshift
-read
 initialise_openshift
+read
+config_openshift
 read
 create_users
 read

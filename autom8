@@ -271,28 +271,6 @@ EOF
     rm -f /tmp/openshift.patch
 }
 
-config_openshift() {
-    echo -e "# Configuring openshift..." >> ${LOG}
-    source /etc/profile.d/kojak.sh
-    mkdir /opt/helm
-    curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/helm/helm-v0.1.0+c9de5e9-linux-amd64.zip
-    cd /opt/helm/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
-    helm update
-    helm repo add fabric8 https://github.com/fabric8io/charts.git
-    mkdir -p /var/lib/openshift/openshift.local.manifests
-    pushd /var/lib/openshift
-    cat <<EOF >> /var/lib/openshift/openshift.local.config/node-master.example.com/node-config.yaml
-kubeletArguments:
-  "read-only-port":
-    - "10255"
-EOF
-    sed -i 's|^podManifestConfig: null|podManifestConfig:\\n  path: /var/lib/openshift/openshift.local.manifests\\n  fileCheckIntervalSeconds: 10|' /var/lib/openshift/openshift.loc
-    popd
-    restorecon -Rv /var/lib/openshift
-    mkdir /etc/openshift
-    htpasswd -cb /etc/openshift/users.htpasswd admin admin
-}
-
 initialise_openshift() {
     echo -e "# Initialising openshift..." >> ${LOG}
     source /etc/profile.d/kojak.sh
@@ -311,6 +289,28 @@ initialise_openshift() {
     for image in image-streams/image-streams-centos7.json; do cat $image | oc create -n openshift -f -; done
     for image in db-templates/*.json; do cat $image | oc create -n openshift -f -; done
     for image in quickstart-templates/*.json; do cat $image | oc create -n openshift -f -; done
+}
+
+config_openshift() {
+    echo -e "# Configuring openshift..." >> ${LOG}
+    source /etc/profile.d/kojak.sh
+    mkdir /opt/helm
+    curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/helm/helm-v0.1.0+c9de5e9-linux-amd64.zip
+    cd /opt/helm/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
+    helm update
+    helm repo add fabric8 https://github.com/fabric8io/charts.git
+    mkdir -p /var/lib/openshift/openshift.local.manifests
+    pushd /var/lib/openshift
+    cat <<EOF >> /var/lib/openshift/openshift.local.config/node-master.example.com/node-config.yaml
+kubeletArguments:
+  "read-only-port":
+    - "10255"
+EOF
+    sed -i 's|^podManifestConfig: null|podManifestConfig:\\n  path: /var/lib/openshift/openshift.local.manifests\\n  fileCheckIntervalSeconds: 10|' /var/lib/openshift/openshift
+    popd
+    restorecon -Rv /var/lib/openshift
+    mkdir /etc/openshift
+    htpasswd -cb /etc/openshift/users.htpasswd admin admin
 }
 
 create_users() {
@@ -381,8 +381,8 @@ pull_images
 install_openshift_client
 install_openshift
 patch_openshift
-config_openshift
 initialise_openshift
+config_openshift
 create_users
 install_fabric8
 create_routes
