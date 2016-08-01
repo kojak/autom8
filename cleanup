@@ -53,8 +53,6 @@ rm -rf ~/.m2
 rm -rf /root/*.log
 rm -rf /etc/openshift
 rm -rf /etc/profile.d/kojak.sh
-rm -rf /usr/lib/systemd/system/docker.service*
-rm -rf /usr/lib/systemd/system/openshift.service*
 
 echo -e "# Clean up completed."
 
