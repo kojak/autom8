@@ -274,6 +274,7 @@ EOF
 config_openshift() {
     echo -e "# Configuring openshift..." >> ${LOG}
     source /etc/profile.d/kojak.sh
+    mkdir /opt/helm
     curl -L "https://bintray.com/fabric8io/helm-ci/download_file?file_path=helm-v0.1.0%2Bc9de5e9-linux-amd64.zip" -o /opt/helm/helm-v0.1.0+c9de5e9-linux-amd64.zip
     cd /opt/helm/ && unzip helm-v0.1.0+c9de5e9-linux-amd64.zip
     helm update
