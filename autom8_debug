@@ -58,6 +58,8 @@ initialise_openshift
 read
 create_users
 read
+pull_images
+read
 install_fabric8
 read
 create_routes
