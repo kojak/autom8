@@ -115,6 +115,7 @@ history_sync() {
 
 PROMPT_COMMAND=history_sync
 EOF
+}
 
 setup_env() {
     echo -e "# Setting up environment..." >> ${LOG}
