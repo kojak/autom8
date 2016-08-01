@@ -157,24 +157,15 @@ EOF
 
 patch_docker() {
     echo -e "# Patching docker..." >> ${LOG}
-    [[ -f "/usr/lib/systemd/system/docker.service.orig" ]]; mv \
-    /usr/lib/systemd/system/docker.service.orig /usr/lib/systemd/system/docker.service
     cp -p /usr/lib/systemd/system/docker.service /usr/lib/systemd/system/docker.service.orig
-    cat > /tmp/docker.patch << 'EOF'
---- /usr/lib/systemd/system/docker.service    2016-07-27 19:35:00.000000000 -0400
-+++ /usr/lib/systemd/system/docker.service    2016-07-30 18:53:27.739000000 -0400
-@@ -8,7 +8,7 @@
- # the default is not to use systemd for cgroups because the delegate issues still
- # exists and systemd currently does not support the cgroup feature set required
- # for containers run by docker
--ExecStart=/usr/bin/dockerd
-+ExecStart=/usr/bin/dockerd --insecure-registry=172.0.0.0/8
- ExecReload=/bin/kill -s HUP $MAINPID
- # Having non-zero Limit*s causes performance problems due to accounting overhead
- # in the kernel. We recommend using cgroups to do container-local accounting.
+    cat > /usr/lib/systemd/system/docker.service << 'EOF'
 EOF
-    (cd / && patch -p0) < /tmp/docker.patch
-    rm -f /tmp/docker.patch
+    [[ -d "/etc/systemd/system/docker.service.d" ]] || mkdir -p /etc/systemd/system/docker.service.d
+    cat  > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:2375 --selinux-enabled --insecure-registry=172.0.0.0/8 --log-level=warn
+EOF
 }
     
 initialise_docker() { 
