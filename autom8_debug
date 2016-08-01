@@ -56,9 +56,9 @@ initialise_openshift
 read
 config_openshift
 read
-create_users
-read
 pull_images
+read
+create_users
 read
 install_fabric8
 read
