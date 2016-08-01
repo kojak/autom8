@@ -333,7 +333,6 @@ create_routes() {
     source /etc/profile.d/custom.sh
     oadm policy add-scc-to-user hostnetwork -z router
     oadm router --create --service-account=router --expose-metrics
-    until oc get pods -l openshift.io/deployer-pod-for.name=router-1 | grep -m 1 "Running"; do sleep 1 ; done
     oc annotate service router prometheus.io/port=9101
     oc annotate service router prometheus.io/scheme=http
     oc annotate service router prometheus.io/path=/metrics
