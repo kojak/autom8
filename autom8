@@ -167,6 +167,8 @@ patch_docker() {
  # Having non-zero Limit*s causes performance problems due to accounting overhead
  # in the kernel. We recommend using cgroups to do container-local accounting.
 EOF
+    (cd / && patch -p0) < /tmp/docker.patch
+    rm -f /tmp/docker.patch
 }
     
 initialise_docker() { 
