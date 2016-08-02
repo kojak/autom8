@@ -62,7 +62,7 @@ install_packages() {
 
 create_profiles() {
     echo "# Creating profile..." >> ${LOG}
-    cat > /etc/profile.d/custom.sh << 'EOF'
+    [[ -f /etc/profile.d/custom.sh ]] || cat > /etc/profile.d/custom.sh << 'EOF'
 # Prompt colors
 if [ `whoami` != "root" ]; then
     PS1='\[\e[32m\][\u@\h \W]\$\[\e[0m\] '
