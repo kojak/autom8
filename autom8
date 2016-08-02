@@ -348,7 +348,7 @@ create_registry() {
 }
 
 post_install() {
-    echo -e "# Validate installaiton..." >> ${LOG}
+    echo -e "# Validate installation..." >> ${LOG}
     source /etc/profile.d/custom.sh
     gofabric8 validate --namespace="default"
     echo -e "# Installation complete!!!" >> ${LOG}
@@ -374,5 +374,5 @@ create_users
 install_fabric8
 create_routes
 create_registry
-./docker_images
+/root/workspace/autom8/docker_images
 post_install
