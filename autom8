@@ -94,6 +94,8 @@ export HELM=/opt/helm/
 export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${HELM}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
+export KUBERNETES_DOMAIN=example.com
+export DOCKER_HOST=tcp://master.example.com:2375
 
 # Turn on bash history options
 shopt -s histappend histreedit histverify
