@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# Copyright (C) 2013 Red Hat Inc.
+# Author: Salim Badakhchani <sal@redhat.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+########################################################################
+
+# Uncomment to debug script
+#set -x
+
+
+## Declare default configuration options
+
+# Distro information
+VMNAME="CentOS-7.0-x86_64"
+VMHOME="/var/lib/libvirt/images"
+ISO="/home/kvm/CentOS-7-x86_64-Minimal-1511.iso"
+
+# Sources and configuration
+KSCFG="./kojak-ks.cfg"
+SRCLOC="http://mirror.centos.org/centos/7/os/x86_64/"
+
+# Virtual machine specifications
+OS_TYPE="linux"
+OS_VARIANT="CentOS 7"
+ARCH="x86_64"
+VCPU="2"
+VMMEM="8192"
+VMDISK="65536M"
+
+# Check user priviledges
+if [ $(id -u) != 0 ]; then
+    echo -e "\n# This script requires root priviledges to run"
+exit
+fi
+
+echo -e "# Restarting Virtualization"
+sudo service libvirtd restart > /dev/null 2>&1
+
+echo -e "# Allocating Diskspace"
+sudo fallocate -l ${VMDISK} ${VMHOME}/${VMNAME}.img
+
+echo -e "# Installating Packages\n"
+virt-install \
+-n ${VMNAME} \
+--accelerate \
+--ram ${VMMEM} \
+--vcpus ${VCPU} \
+--os-type ${OS_TYPE} \
+--os-variant ${OS_VARIANT} \
+--arch ${ARCH} \
+--disk ${VMHOME}/${VMNAME}.img \
+--initrd-inject "${KSCFG}" \
+--location ${SRCLOC} \
+--extra-args "ks=file:/$(basename ${KSCFG}) console=tty0 console=ttyS0,115200 serial rd_NO_PLYMOUTH" \
+--console pty \
+--nographics
+exit
