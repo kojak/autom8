@@ -205,7 +205,7 @@ Requires=docker.service network.service
 After=network.service
 
 [Service]
-ExecStart=/opt/openshift-origin-server-v1.2.1-5e723f6/openshift start --master-config=/var/lib/openshift/openshift.local.config/master/master-config.yaml --node-config=/var/lib/openshift/openshift.local.config/node-master.example.com/node-config.yaml
+ExecStart=/opt/openshift-origin-server-v1.2.1-5e723f6/openshift start--cors-allowed-origins=.* --master-config=/var/lib/openshift/openshift.local.config/master/master-config.yaml --node-config=/var/lib/openshift/openshift.local.config/node-master.example.com/node-config.yaml
 WorkingDirectory=/var/lib/openshift/
 
 [Install]
