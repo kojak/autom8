@@ -164,7 +164,7 @@ patch_docker() {
  # exists and systemd currently does not support the cgroup feature set required
  # for containers run by docker
 -ExecStart=/usr/bin/dockerd
-+ExecStart=/usr/bin/dockerd --selinux-enabled --insecure-registry=172.0.0.0/8 --log-level=warn
++ExecStart=/usr/bin/dockerd --selinux-enabled --insecure-registry=172.0.0.0/8
  ExecReload=/bin/kill -s HUP $MAINPID
  # Having non-zero Limit*s causes performance problems due to accounting overhead
  # in the kernel. We recommend using cgroups to do container-local accounting.
@@ -176,6 +176,7 @@ EOF
 initialise_docker() { 
     echo -e "# Initialising docker..." >> ${LOG}
     usermod -aG docker $(whoami)
+    newgrp docker
     systemctl daemon-reload
     systemctl enable docker
     systemctl restart docker
