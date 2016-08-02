@@ -330,7 +330,7 @@ create_profiles
 setup_env
 create_resolve
 add_hostname
-pull images
+pull_images
 install_openshift_client
 install_openshift
 patch_openshift
