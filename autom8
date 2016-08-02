@@ -332,7 +332,7 @@ create_routes() {
     echo -e "# Creating routes..." >> ${LOG}
     source /etc/profile.d/custom.sh
     oadm policy add-scc-to-user hostnetwork -z router
-    oadm router --create --service-account=router --expose-metrics
+    oc adm router --create --credentials=/var/lib/openshift/openshift.local.config/master/openshift-router.kubeconfig --service-account=router --expose-metrics
     oc annotate service router prometheus.io/port=9101
     oc annotate service router prometheus.io/scheme=http
     oc annotate service router prometheus.io/path=/metrics
@@ -344,7 +344,7 @@ create_registry() {
     echo -e "# Creating the registry..." >> {LOG}
     source /etc/profile.d/custom.sh
     oadm policy add-scc-to-user privileged -z registry 
-    oadm registry --service-account=registry
+    oc adm registry --create --credentials=/var/lib/openshift/openshift.local.config/master/openshift-registry.kubeconfig --service-account=registry
 }
 
 pull_images() {
