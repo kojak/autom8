@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+#
+# Copyright (C) 2016 Xenith Consulting Limited
+# Author: Salim Badakhchani <salimb@xenithconsulting.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+########################################################################
+
+# Switch on Debugging
+set -x
+
+# Check user privileges
+[[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
+
+# Define logfile
+LOG="/root/install.log"
+
+echo -e "########################################################################" >> ${LOG}
+echo -e "Installing Openshift Origin..." >> ${LOG}
+echo -e "########################################################################\n" >> ${LOG}
+echo -e $(date) >> ${LOG}
+echo >> ${LOG}
+
+# Execution statements logically grouped into functions.
+
+config_network() {
+    echo -e "# Pull docker images..." >> ${LOG}
+    source /etc/profile.d/custom.sh
+    docker pull openshift/origin-pod
+    docker pull openshift/origin-sti-builder
+    docker pull openshift/origin-docker-builder
+    docker pull openshift/origin-deployer
+    docker pull openshift/origin-docker-registry
+    docker pull openshift/origin-haproxy-router:v1.2.1
+    docker pull prom/haproxy-exporter
+}
+
