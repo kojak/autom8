@@ -31,11 +31,11 @@ ISO="/home/kvm/CentOS-7-x86_64-Minimal-1511.iso"
 
 # Sources and configuration
 KSCFG="./kojak-ks.cfg"
-SRCLOC="http://mirror.centos.org/centos/7/os/x86_64/"
+SRCLOC="http://www.mirrorservice.org/sites/mirror.centos.org/7/os/x86_64"
 
 # Virtual machine specifications
 OS_TYPE="linux"
-OS_VARIANT="CentOS 7"
+OS_VARIANT="rhel7"
 ARCH="x86_64"
 VCPU="2"
 VMMEM="8192"
