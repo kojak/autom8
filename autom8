@@ -174,7 +174,7 @@ EOF
 initialise_docker() { 
     echo -e "# Initialising docker..." >> ${LOG}
     usermod -aG docker $(whoami)
-    newgrp docker
+    exec newgrp docker
     exit
     systemctl daemon-reload
     systemctl enable docker
