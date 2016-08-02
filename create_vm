@@ -47,13 +47,30 @@ if [ $(id -u) != 0 ]; then
 exit
 fi
 
-echo -e "# Restarting Virtualization"
+echo -e "# Restarting virtualization"
 sudo service libvirtd restart > /dev/null 2>&1
 
-echo -e "# Allocating Diskspace"
+echo -e "# Allocating diskspace..."
 sudo fallocate -l ${VMDISK} ${VMHOME}/${VMNAME}.img
 
-echo -e "# Installating Packages\n"
+VMDOMAIN=$(virsh list --all | grep ${VMNAME} | awk '{print $(NF-2)}')
+if [ ! "${VMDOMAIN}" ]; then
+    echo -e "# No pre-existing vm found"
+else
+    while true; do
+    read -p "# Found an existing VM with the same name...Do you want to destroy it?`echo $'\n>> '` [Y/n] " yn
+    case $yn in
+        [Yy]* ) virsh undefine ${VMNAME} && virsh destroy ${VMNAME} && virsh vol-delete --pool default ${VMNAME}.img > /dev/null 2>&1
+    break
+    ;;
+        [Nn]* ) menu
+    ;;
+        * ) echo ">> Invalid Option";;
+    esac
+    done
+fi
+
+echo -e "# Creating virtual machine..."
 virt-install \
 -n ${VMNAME} \
 --accelerate \
