@@ -137,48 +137,16 @@ add_hostname() {
     [[ ! -z $(grep master /etc/hosts) ]] || echo -e "\n192.168.122.100\tmaster master.example.com" >> /etc/hosts
 }
 
-install_docker() {
-    echo -e "# Installing docker..." >> ${LOG}
-    cat > /etc/yum.repos.d/docker.repo <<-'EOF'
-[docker-engine]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-
-    yum -y install docker-engine
-}
-
-patch_docker() {
-    echo -e "# Patching docker..." >> ${LOG} 
-    [[ -f "/usr/lib/systemd/system/docker.service.orig" ]]; mv \
-    /usr/lib/systemd/system/docker.service.orig /usr/lib/systemd/system/docker.service
-    cp -p /usr/lib/systemd/system/docker.service /usr/lib/systemd/system/docker.service.orig
-    cat > /tmp/docker.patch << 'EOF'
---- /usr/lib/systemd/system/docker.service    2016-07-27 19:35:00.000000000 -0400
-+++ /usr/lib/systemd/system/docker.service    2016-07-30 18:53:27.739000000 -0400
-@@ -8,7 +8,7 @@
- # the default is not to use systemd for cgroups because the delegate issues still
- # exists and systemd currently does not support the cgroup feature set required
- # for containers run by docker
--ExecStart=/usr/bin/dockerd
-+ExecStart=/usr/bin/dockerd --insecure-registry=172.0.0.0/8
- ExecReload=/bin/kill -s HUP $MAINPID
- # Having non-zero Limit*s causes performance problems due to accounting overhead
- # in the kernel. We recommend using cgroups to do container-local accounting.
-EOF
-    (cd / && patch -p0) < /tmp/docker.patch
-    rm -f /tmp/docker.patch
-}
-    
-initialise_docker() { 
-    echo -e "# Initialising docker..." >> ${LOG}
-    usermod -aG docker $(whoami)
-    systemctl daemon-reload
-    systemctl enable docker
-    systemctl restart docker
+pull_images() {
+    echo -e "# Pull docker images..." >> ${LOG}
+    source /etc/profile.d/custom.sh
+    docker pull openshift/origin-pod
+    docker pull openshift/origin-sti-builder
+    docker pull openshift/origin-docker-builder
+    docker pull openshift/origin-deployer
+    docker pull openshift/origin-docker-registry
+    docker pull openshift/origin-haproxy-router:v1.2.1
+    docker pull prom/haproxy-exporter
 }
 
 install_openshift_client() {
@@ -362,9 +330,7 @@ create_profiles
 setup_env
 create_resolve
 add_hostname
-install_docker
-patch_docker
-initialise_docker 
+pull images
 install_openshift_client
 install_openshift
 patch_openshift
@@ -374,5 +340,4 @@ create_users
 install_fabric8
 create_routes
 create_registry
-/root/workspace/autom8/docker_images
 post_install
