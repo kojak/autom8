@@ -1,0 +1,3 @@
+oc get dc docker-registry -o yaml | grep image: | tr -d " "
+oc get oauthclient fabric8
+
