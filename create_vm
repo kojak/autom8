@@ -50,9 +50,6 @@ fi
 echo -e "# Restarting virtualization"
 sudo service libvirtd restart > /dev/null 2>&1
 
-echo -e "# Allocating diskspace..."
-sudo fallocate -l ${VMDISK} ${VMHOME}/${VMNAME}.img
-
 VMDOMAIN=$(virsh list --all | grep ${VMNAME} | awk '{print $(NF-2)}')
 if [ ! "${VMDOMAIN}" ]; then
     echo -e "# No pre-existing vm found"
@@ -69,6 +66,9 @@ else
     esac
     done
 fi
+
+echo -e "# Allocating diskspace..."
+sudo fallocate -l ${VMDISK} ${VMHOME}/${VMNAME}.img
 
 echo -e "# Creating virtual machine..."
 virt-install \
