@@ -33,7 +33,7 @@ update_system
 read
 install_packages
 read
-create_profiles
+create_profile
 read
 setup_env
 read

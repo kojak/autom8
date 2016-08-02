@@ -60,7 +60,7 @@ install_packages() {
     yum -y install git wget unzip net-tools httpd-tools patch mlocate maven htop iftop curl tree bind-utils dos2unix
 }
 
-create_profiles() {
+create_profile() {
     echo "# Creating profile..." >> ${LOG}
     [[ -f /etc/profile.d/custom.sh ]] || cat > /etc/profile.d/custom.sh << 'EOF'
 # Prompt colors
@@ -326,7 +326,7 @@ config_network
 disable_firewall
 update_system
 install_packages
-create_profiles
+create_profile
 setup_env
 create_resolve
 add_hostname
