@@ -27,15 +27,9 @@ set -x
 # Define logfile
 LOG="/root/install.log"
 
-echo -e "########################################################################" >> ${LOG}
-echo -e "Installing Openshift Origin..." >> ${LOG}
-echo -e "########################################################################\n" >> ${LOG}
-echo -e $(date) >> ${LOG}
-echo >> ${LOG}
-
 # Execution statements logically grouped into functions.
 
-config_network() {
+pull_images() {
     echo -e "# Pull docker images..." >> ${LOG}
     source /etc/profile.d/custom.sh
     docker pull openshift/origin-pod
@@ -47,3 +41,4 @@ config_network() {
     docker pull prom/haproxy-exporter
 }
 
+pull_images
