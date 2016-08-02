@@ -344,7 +344,7 @@ create_registry() {
     echo -e "# Creating the registry..." >> {LOG}
     source /etc/profile.d/custom.sh
     oadm policy add-scc-to-user privileged -z registry 
-    oadm registry --service-account=registry --mount-host=/opt/openshift-registry
+    oadm registry --service-account=registry
 }
 
 pull_images() {
