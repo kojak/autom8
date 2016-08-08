@@ -10,7 +10,7 @@ Kojak started off as a collection of scripts which were used to automate the ins
 Tool Chain
 ----------
 
-Kojak Autom8 installs Openshift Origin and Fabric whicch provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a DevOps platform to allow users to familiarize themselves with the DevOps aproach and tools.   
+Kojak Autom8 installs Openshift Origin and Fabric which provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a DevOps platform to allow users to familiarize themselves with the DevOps aproach and tools.   
 
 Installation Prerequisites
 ---------------------------
