@@ -10,7 +10,7 @@ Kojak started off as a collection of scripts which were used to automate the ins
 Tool Chain
 ----------
 
-Kojak ships with an, industry reconised, opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a DevOps platform to allow users to familiarize themselves with the DevOps aproach and tools.   
+Kojak Autom8 installs Openshift Origin and Fabric whicch provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a DevOps platform to allow users to familiarize themselves with the DevOps aproach and tools.   
 
 Installation Prerequisites
 ---------------------------
@@ -31,7 +31,7 @@ Minimum System Requirements
 The virtual machine is configured with the following default specifications:
 
 1. 8GB RAM
-2. 48GB Disk Space
+2. 64GB Disk Space
 
 Your local host should be configured with the following minimum specifications:
 
@@ -42,8 +42,10 @@ Your local host should be configured with the following minimum specifications:
 Installation Prerequisites
 --------------------------
 
-DNS will need to be set up as per the instructions for Openshift Origin.  
-
+Add the following to your /etc/hosts file in order to resolv the microservices shipped with Kojak Autom8 as part of the DevOps Cicuit.
+```
+192.168.122.100 example.com master.example.com fabric8.example.com fabric8-master.example.com docker-registry.example.com gogs.example.com nexus.example.com jenkins.example.com
+```
 Installation Instructions
 ------------------------
 
