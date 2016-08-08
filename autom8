@@ -19,7 +19,7 @@
 ########################################################################
 
 # Switch on Debugging
-set -x
+#set -x
 
 # Check user privileges
 [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"

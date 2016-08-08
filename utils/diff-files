@@ -24,7 +24,7 @@
 read -d '' USAGE <<- EOF
 Usage: diff-files [options] <directory> <directory>
 -h, --help            show this help message and exit
--d, --cert            prompt user for directory names
+-d, --diff            prompt user for directory names
 EOF
 
 
