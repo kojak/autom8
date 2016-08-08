@@ -69,6 +69,10 @@ You can now browsing to the Fabric8 web console via http://fabric8.example.com w
 1. username: admin
 2. password: admin
 
+To configure new users login into the vitual machine and execute the following:
+```
+htpasswd -b /etc/openshift/users.htpasswd <user> <password>
+```
 
 Configuration Notes
 -------------------
@@ -87,17 +91,7 @@ You can access the virtual machine via ssh at 192.168.122.100 using the followin
 Known Issues and How to Report Them
 -----------------------------------
 
-Please follow this template while reporting an issue:
-
-Component: Host, Guest (OS version), Koji, Apache HTTP etc.
-
-Description: description of the situation 
-
-Steps to reproduce: clear description of how to reproduce the issue, as ordered list
-
-Expected result: the result that was expected
-
-Actual result: the actual result including error messages, exceptions etc.
+Execute the autom8-diag script and send the output via a github ticket.
 
 See http://github.com/sbadakhc/kojak/issues?state=open
 

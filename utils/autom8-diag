@@ -18,7 +18,7 @@
 #
 ########################################################################
 
+docker info
 oadm diagnostics
 oc status -v
 oc get oauthclient fabric8
-
