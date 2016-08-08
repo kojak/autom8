@@ -93,7 +93,6 @@ export OPENSHIFT_VERSION=v1.2.1-5e723f6
 export OPENSHIFT_SERVER=/opt/openshift-origin-server-${OPENSHIFT_VERSION}
 export OPENSHIFT_CLIENT=/opt/openshift-origin-client-tools-${OPENSHIFT_VERSION}
 export FABRIC8=/opt/gofabric8/
-export HELM=/opt/helm/
 export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${HELM}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
@@ -257,14 +256,6 @@ config_openshift() {
     echo -e "# Configuring openshift..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     mkdir -p /var/lib/openshift/openshift.local.manifests
-    pushd /var/lib/openshift
-    cat <<EOF >> /var/lib/openshift/openshift.local.config/node-master.example.com/node-config.yaml
-kubeletArguments:
-  "read-only-port":
-    - "10255"
-EOF
-    sed -i 's|^podManifestConfig: null|podManifestConfig:\\n  path: /var/lib/openshift/openshift.local.manifests\\n  fileCheckIntervalSeconds: 10|' /var/lib/openshift/openshift
-    popd
     restorecon -Rv /var/lib/openshift
     mkdir -p ~/.kube/
     ln -s /var/lib/openshift/openshift.local.config/master/admin.kubeconfig ~/.kube/config
