@@ -40,7 +40,7 @@ while [ $COUNT -gt 0 ]; do
   COUNT=$[$COUNT-1]
 done
 
-echo -e "# Remove docker..."
+echo -e "# Cleanup install..."
 rm -rf /opt/openshift*
 rm -rf /opt/gofabric8*
 rm -rf /var/lib/openshift
