@@ -20,7 +20,7 @@
 
 #!/bin/bash
 
-source ./devops
+source ../autom8
 
 # Call functions interactively
 
