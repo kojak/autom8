@@ -41,7 +41,7 @@ create_resolve
 read
 add_hostname
 read
-pull images
+pull_images
 read
 install_openshift_client
 read
@@ -60,5 +60,5 @@ read
 create_routes
 read
 create_registry
+read
 post_install
-
