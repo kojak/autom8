@@ -253,11 +253,6 @@ initialise_openshift() {
 config_openshift() {
     echo -e "# Configuring openshift..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
-    mkdir /opt/helm
-    curl -L "https://github.com/helm/helm-classic/archive/0.8.1.zip" -o /opt/helm/helm.zip
-    cd /opt/helm/ && unzip helm.zip
-    helm update
-    helm repo add fabric8 https://github.com/fabric8io/charts.git
     mkdir -p /var/lib/openshift/openshift.local.manifests
     pushd /var/lib/openshift
     cat <<EOF >> /var/lib/openshift/openshift.local.config/node-master.example.com/node-config.yaml
