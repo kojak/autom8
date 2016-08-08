@@ -47,7 +47,6 @@ echo -e "# Remove docker..."
 rm -rf /opt/openshift*
 rm -rf /opt/gofabric8*
 rm -rf /opt/helm*
-rm -rf /var/lib/docker
 rm -rf /var/lib/openshift
 rm -rf ~/.m2
 rm -rf /root/*.log
