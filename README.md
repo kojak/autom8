@@ -66,6 +66,7 @@ yum -y install git && mkdir workspace && cd workspace && git clone https://githu
 At this stage the system is fully installed and configured.  
 
 You can now browsing to the Fabric8 web console via http://fabric8.example.com with the following credentials:
+
 1. username: admin
 2. password: admin
 
@@ -93,7 +94,7 @@ Known Issues and How to Report Them
 
 Execute the autom8-diag script and send the output via a github ticket.
 
-See http://github.com/sbadakhc/kojak/issues?state=open
+See http://github.com/sbadakhc/autom8/issues?state=open
 
 Discussion
 ----------
