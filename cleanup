@@ -51,7 +51,7 @@ rm -rf /etc/profile.d/kojak.sh
 rm -rf ~/.kube
 rm -rf ~/.pki
 
-echo -e "# Stopping docker..."
+echo -e "# restarting docker..."
 systemctl restart docker
 
 
