@@ -40,9 +40,6 @@ while [ $COUNT -gt 0 ]; do
   COUNT=$[$COUNT-1]
 done
 
-echo -e "# Stopping docker..."
-systemctl re docker
-
 echo -e "# Remove docker..."
 rm -rf /opt/openshift*
 rm -rf /opt/gofabric8*
@@ -53,6 +50,10 @@ rm -rf /etc/openshift
 rm -rf /etc/profile.d/kojak.sh
 rm -rf ~/.kube
 rm -rf ~/.pki
+
+echo -e "# Stopping docker..."
+systemctl restart docker
+
 
 echo -e "# Clean up completed."
 
