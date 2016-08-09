@@ -320,7 +320,6 @@ install_openshift
 patch_openshift
 initialise_openshift
 config_openshift
-create_users
 install_fabric8
 create_routes
 create_registry
