@@ -167,7 +167,7 @@ install_openshift() {
     mkdir /opt/${OPENSHIFT_SERVER}
     [[ -f "/tmp/${OPENSHIFT_SERVER}" ]] || \
     wget https://github.com/openshift/origin/releases/download/${OPENSHIFT_VERSION}/${OPENSHIFT_SERVER}-linux-64bit.tar.gz -P /tmp
-    tar -zxvf /tmp/{OPENSHIFT_SERVER}-linux-64bit.tar.gz -C /opt/${OPENSHIFT_SERVER}/ --strip-components 1
+    tar -zxvf /tmp/${OPENSHIFT_SERVER}-linux-64bit.tar.gz -C /opt/${OPENSHIFT_SERVER}/ --strip-components 1
     cat >/usr/lib/systemd/system/openshift.service<< 'EOF'
 [Unit]
 Description=OpenShift
