@@ -47,7 +47,7 @@ rm -rf /var/lib/openshift
 rm -rf ~/.m2
 rm -rf /root/*.log
 rm -rf /etc/openshift
-rm -rf /etc/profile.d/kojak.sh
+rm -rf /etc/profile.d/custom.sh
 rm -rf ~/.kube
 rm -rf ~/.pki
 
