@@ -90,10 +90,11 @@ export HISTCONTROL='ignoreboth:erasedups'
 # Configure tooling
 export OPENSHIFT=/var/lib/openshift
 export OPENSHIFT_VERSION=v1.2.1-5e723f6
-export OPENSHIFT_SERVER=/opt/openshift-origin-server-${OPENSHIFT_VERSION}
-export OPENSHIFT_CLIENT=/opt/openshift-origin-client-tools-${OPENSHIFT_VERSION}
+export OPENSHIFT_REVISION=5e723f6
+export OPENSHIFT_SERVER=openshift-origin-server-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
+export OPENSHIFT_CLIENT=openshift-origin-client-tools-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
 export FABRIC8=/opt/gofabric8/
-export PATH=${OPENSHIFT}:${OPENSHIFT_SERVER}:${OPENSHIFT_CLIENT}:${FABRIC8}:${HELM}:${PATH}
+export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
 export KUBERNETES_DOMAIN=example.com
@@ -153,10 +154,10 @@ pull_images() {
 install_openshift_client() {
     echo -e "# Installing openshift client..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
-    mkdir ${OPENSHIFT_CLIENT}
-    [[ -f "/tmp/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz" ]] || \
-    wget https://github.com/openshift/origin/releases/download/v1.2.1/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz -P /tmp
-    tar -zxvf /tmp/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz -C ${OPENSHIFT_CLIENT}/
+    mkdir /opt/${OPENSHIFT_CLIENT}
+    [[ -f "/tmp/${OPENSHIFT_CLIENT}-linux-64bit.tar.gz" ]] || \
+    wget https://github.com/openshift/origin/releases/download/${OPENSHIFT_VERSION}/${OPENSHIFT_CLIENT}-linux-64bit.tar.gz -P /tmp
+    tar -zxvf /tmp/${OPENSHIFT_CLIENT}-linux-64bit.tar.gz -C /opt/${OPENSHIFT_CLIENT}/
 }
 
 install_openshift() {
@@ -164,9 +165,9 @@ install_openshift() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     mkdir ${OPENSHIFT}
     mkdir ${OPENSHIFT_SERVER}
-    [[ -f "/tmp/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz" ]] || \
-    wget https://github.com/openshift/origin/releases/download/v1.2.1/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz -P /tmp
-    tar -zxvf /tmp/openshift-origin-server-v1.2.1-5e723f6-linux-64bit.tar.gz -C ${OPENSHIFT_SERVER}/ --strip-components 1
+    [[ -f "/tmp/${OPENSHIFT_SERVER}" ]] || \
+    wget https://github.com/openshift/origin/releases/download/${OPENSHIFT_VERSION}/{OPENSHIFT_SERVER}-linux-64bit.tar.gz -P /tmp
+    tar -zxvf /tmp/{OPENSHIFT_SERVER}-linux-64bit.tar.gz -C ${OPENSHIFT_SERVER}/ --strip-components 1
     cat >/usr/lib/systemd/system/openshift.service<< 'EOF'
 [Unit]
 Description=OpenShift
@@ -186,7 +187,7 @@ patch_openshift() {
     echo -e "# Patching openshift..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     cd ${OPENSHIFT}
-    ${OPENSHIFT_SERVER}/openshift start --write-config=openshift.local.config 
+    /opt/${OPENSHIFT_SERVER}/openshift start --write-config=openshift.local.config 
     [[ -f "${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig" ]]; mv \
     ${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
     cp -p ${OPENSHIFT}/openshift.local.config/master/master-config.yaml ${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig
