@@ -21,6 +21,9 @@
 # Switch on Debugging
 set -x
 
+# Check hostname
+[[ $(hostname) == "master.example.com" ]] || echo -e "\n# Please make your installing on a virtual machine"
+
 # Check user privileges
 [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
 
