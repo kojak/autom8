@@ -22,13 +22,13 @@
 set -x
 
 # Check hostname
-[[ $(hostname) == "master.example.com" ]] || echo -e "\n# Please make your installing on a virtual machine"
+[[ $(hostname) == master.example.com ]] || echo -e "\n# Please make your installing on a virtual machine" && exit
 
 # Check user privileges
 [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
 
 # Check docker is running
-[[ $(docker --version) != null ]] || echo -e "\n# Please make sure docker is installed and running"
+[[ $(docker --version) == null ]] || echo -e "\n# Please make sure docker is installed and running" && exit
 
 # Define logfile
 LOG="/root/install.log"
