@@ -262,13 +262,6 @@ config_openshift() {
     ln -s /var/lib/openshift/openshift.local.config/master/admin.kubeconfig ~/.kube/config
 }
  
-create_users() {
-    echo -e "# Creating user roles..." >> ${LOG}
-    source /etc/profile.d/custom.sh > /dev/null 2>&1
-    oc adm policy add-cluster-role-to-user cluster-admin admin
-    oc adm policy add-cluster-role-to-group cluster-reader system:serviceaccounts
-}
-
 install_fabric8() {
     echo -e "# Downloading gofabric8..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
