@@ -42,13 +42,13 @@ Your local host should be configured with the following minimum specifications:
 Installation Prerequisites
 --------------------------
 
-Create the virtual machine with the create-vm script.  You can modify the varibles in the script to control alloted resources but it is recommeded that you stick with the defaults. Your your localhost execute the following commands.
+Create the virtual machine with the create-vm script.  You can modify the varibles in the script to control alloted resources but it is recommeded that you stick with the defaults. On your your localhost execute the following commands.
 ```
 [root@localhost]# git clone https://github.com/kojak/autom8.git
 [root@localhost]# cd autom8
 [root@localhost]# ./create-vm
 ```
-Add the following to your /etc/hosts file in order to resolv the microservices shipped with Kojak Autom8 as part of the DevOps Cicuit.
+Add the following to your /etc/hosts file on your loclahost in order to resolv the microservices shipped with Kojak Autom8 as part of the DevOps Cicuit.
 ```
 192.168.122.100 example.com master.example.com fabric8.example.com fabric8-master.example.com docker-registry.example.com gogs.example.com nexus.example.com jenkins.example.com
 ```
