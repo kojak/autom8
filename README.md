@@ -106,5 +106,3 @@ Discussion
 ----------
 
 Join our community at https://plus.google.com/u/0/communities/103028582394768375364
-
-
