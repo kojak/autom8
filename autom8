@@ -21,14 +21,14 @@
 # Switch on Debugging
 set -x
 
-# Check hostname
-[[ $(hostname) != master.example.com ]] || echo -e "\n# Please make your installing on a virtual machine"
-
-# Check user privileges
-[[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
-
-# Check docker is running
-[[ $(docker --version) == null ]] || echo -e "\n# Please make sure docker is installed and running"
+# Run pre-execution tests
+if [ $(hostname) != master.example.com ]; then
+    echo -e "\n# Please make your installing on a virtual machine"
+    exit
+else
+    [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
+    [[ $(docker --version) == null ]] || echo -e "\n# Please make sure docker is installed and running"
+fi
 
 # Define logfile
 LOG="/root/install.log"
