@@ -31,7 +31,8 @@ LOG="/root/install.log"
 
 install_docker() {
     echo -e "# Installing docker..." >> ${LOG}
-    cat > /etc/yum.repos.d/docker.repo <<-'EOF'
+    yum -y install patch
+    cat > /etc/yum.repos.d/docker.repo << 'EOF'
 [docker-engine]
 name=Docker Repository
 baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
