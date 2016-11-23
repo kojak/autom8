@@ -318,7 +318,6 @@ EOF
 if [[ $# < 2 ]]; then echo "${USAGE}"; fi
 while [[ $# > 1 ]]; do OPTS="$1"; shift
 
-
 case $OPTS in
     -f|--fqdn)
     echo -e "########################################################################" > ${LOG}
