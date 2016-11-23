@@ -228,13 +228,13 @@ config_openshift() {
 create_users() {
     echo -e "# Creating users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
+    mkdir /etc/openshift
     htpasswd -cb /etc/openshift/htpasswd admin admin
 }
 
 initialise_openshift() {
     echo -e "# Initialising openshift..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
-    mkdir /etc/openshift
 
     systemctl daemon-reload
     systemctl enable openshift.service
