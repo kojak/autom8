@@ -291,11 +291,13 @@ create_routes() {
 install_fabric8() {
     echo -e "# Downloading gofabric8..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
+    [[ -f "/tmp/gofabric8-linux-amd64" ]] || \
+    wget https://github.com/fabric8io/gofabric8/releases/download/v${FAB_VERSION}/gofabric8-linux-amd64 -P /tmp
+    chmod +x /tmp/gofabric8-linux-amd64
     mkdir /opt/gofabric8
     cd /opt/gofabric8
-    [[ -f "/tmp/gofabric8-linux-amd64" ]] || \
-    wget https://github.com/fabric8io/gofabric8/releases/download/v${FAB_VERSION}/gofabric8-linux-amd64 
-    chmod +x gofabric8-linux-amd64
+    cp /tmp/gofabric8-linux-amd64 /opt/gofabric8
+    
 
     echo -e "# Installing fabric8..." >> ${LOG}
     gofabric8-linux-amd64 deploy --yes --namespace="default" --domain=${DOMAIN} --app=cd-pipeline
@@ -359,6 +361,7 @@ case $OPTS in
 
     rm -rf /opt/openshift*
     rm -rf /var/lib/openshift
+    rm -rf /opt/gofabric8
     rm -rf ~/.m2
     rm -rf /root/*.log
     rm -rf /etc/openshift
