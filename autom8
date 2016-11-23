@@ -225,6 +225,12 @@ config_openshift() {
     cat tmp.file > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
 }
 
+create_users() {
+    echo -e "# Creating users..." >> ${LOG}
+    source /etc/profile.d/custom.sh > /dev/null 2>&1
+    htpasswd -cb /etc/openshift/htpasswd admin admin
+}
+
 initialise_openshift() {
     echo -e "# Initialising openshift..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
@@ -248,7 +254,7 @@ initialise_openshift() {
 }
 
 create_certs() {
-    echo -e "# Creating certs.." >> ${LOG}
+    echo -e "# Creating certs..users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm ca create-server-cert \
     --signer-cert=/var/lib/openshift/openshift.local.config/master/ca.crt \
@@ -300,10 +306,6 @@ install_fabric8() {
     oc get oauthclient fabric8
 }
 
-create_users() {
-    htpasswd -cb /etc/openshift/htpasswd admin admin
-}
-
 read -d '' USAGE <<- EOF
 Usage: kojak [options] <user input>
 -h, --help            show this help message and exit
@@ -337,12 +339,12 @@ case $OPTS in
     install_openshift_client
     install_openshift
     config_openshift
+    create_users
     initialise_openshift
     create_certs
     create_registry
     create_routes
     install_fabric8 
-    create_users
     shift
     ;;
     -c| --clean)

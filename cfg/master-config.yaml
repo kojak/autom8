@@ -156,7 +156,7 @@ oauthConfig:
     method: auto
     serviceAccountMethod: prompt
   identityProviders:
-   - name: htpasswd 
+  - name: htpasswd 
     challenge: true 
     login: true 
     provider:
