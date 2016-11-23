@@ -156,27 +156,13 @@ oauthConfig:
     method: auto
     serviceAccountMethod: prompt
   identityProviders:
-  - challenge: false
-    login: true
-    mappingMethod: claim
-    name: oauth_provider
+   - name: htpasswd 
+    challenge: true 
+    login: true 
     provider:
       apiVersion: v1
-      kind: OpenIDIdentityProvider
-      clientID: ${CLI_ID}
-      clientSecret: ${CLI_SEC}
-      claims:
-        id:
-        - sub
-        preferredUsername:
-        - preferred_username
-        name:
-        - name
-        email:
-        - email
-      urls:
-        authorize: https://login.windows.net/${OAUTH}/oauth2/authorize
-        token: https://login.windows.net/${OAUTH}/oauth2/token
+      kind: HTPasswdPasswordIdentityProvider
+      file: /etc/openshift/htpasswd 
   masterCA: ca-bundle.crt
   masterPublicURL: https://${FQDN}:8443
   masterURL: https://${FQDN}:8443

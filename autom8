@@ -300,6 +300,10 @@ install_fabric8() {
     oc get oauthclient fabric8
 }
 
+create_users() {
+    htpasswd -cb /etc/openshift/htpasswd admin admin
+}
+
 read -d '' USAGE <<- EOF
 Usage: kojak [options] <user input>
 -h, --help            show this help message and exit
@@ -338,6 +342,7 @@ case $OPTS in
     create_registry
     create_routes
     install_fabric8 
+    create_users
     shift
     ;;
     -c| --clean)
