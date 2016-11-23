@@ -304,7 +304,7 @@ install_fabric8() {
     gofabric8-linux-amd64 secrets --yes
     gofabric8-linux-amd64 volume --yes --host-path="/opt/fabric8-data"
     gofabric8-linux-amd64 routes --yes
-    gofabric8-linux-amd64 pull cd-pipeline
+    gofabric8-linux-amd64 pull fabric8-devops
     oc get oauthclient fabric8
 }
 
