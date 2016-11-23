@@ -302,7 +302,7 @@ install_fabric8() {
     echo -e "# Installing fabric8..." >> ${LOG}
     gofabric8-linux-amd64 deploy --yes --namespace="default" --domain=${DOMAIN} --package="platform"
     gofabric8-linux-amd64 secrets --yes
-    gofabric8-linux-amd64 volumes --yes --host-path="/opt/fabric8-data"
+    gofabric8-linux-amd64 volumes --yes
     gofabric8-linux-amd64 routes --yes
     oc get oauthclient fabric8
 }
