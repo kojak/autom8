@@ -106,7 +106,7 @@ export FAB_VERSION=0.4.105
 export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=${OPENSHIFT}/openshift.local.config/master/ca.crt
-export KUBERNETES_DOMAIN=${FQDN}
+export KUBERNETES_DOMAIN=${DOMAIN}
 
 # Turn on bash history options
 shopt -s histappend histreedit histverify
