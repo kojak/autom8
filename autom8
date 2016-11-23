@@ -90,13 +90,10 @@ export HISTIGNORE=' *:&:?:??'
 export HISTCONTROL='ignoreboth:erasedups'
 
 # Configure environment
-export FQDN="kojak.bluebank.io"
-export DOMAIN="bluebank.io"
-export SUBDOMAIN="devops.bluebank.io"
-export INT_IPADDR="10.0.0.4"
-export CLI_ID="0599ae52-1d9f-4c34-8909-a0e4b6cf7075"
-export CLI_SEC="7O7XpR90ScIZyJT8asmk65Xy6LX3grK6/0PptVem1xk="
-export OAUTH="7c7175e2-48cc-4ef6-938d-e3dd722ec114"
+export FQDN="master.example.com"
+export DOMAIN="example.com"
+export SUBDOMAIN="cloudapps.example.com"
+export INT_IPADDR="192.168.122.100"
 
 # Configure tooling
 export OPENSHIFT=/var/lib/openshift
