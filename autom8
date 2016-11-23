@@ -218,7 +218,7 @@ config_openshift() {
     cd ${OPENSHIFT}
     /opt/${OPENSHIFT_SERVER}/openshift start --write-config=openshift.local.config 
     mv ${OPENSHIFT}/openshift.local.config/master/master-config.yaml ${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig
-    envsubst < ${HOME}/workspace/kojak/cfg/master-config.yaml > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
+    envsubst < ${HOME}/workspace/autom8/cfg/master-config.yaml > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
     
     # Fix the varible substition
     sed -e 's/openshift\/origin-:/openshift\/origin-\$\{component\}\:\$\{version\}/g' /var/lib/openshift/openshift.local.config/master/master-config.yaml > tmp.file
