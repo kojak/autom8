@@ -273,7 +273,6 @@ create_certs() {
     echo -e "started openshift..."
 }
 
-
 create_registry() {
     echo -e "# Creating the registry..." >> {LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
@@ -286,6 +285,12 @@ create_routes() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm policy add-scc-to-user hostnetwork -z router
     oadm router router --replicas=1 --service-account=router
+}
+
+apply_policies() {
+    echo -e "# Creating routes..." >> ${LOG}
+    source /etc/profile.d/custom.sh > /dev/null 2>&1
+    oadm policy add-cluster-role-to-user cluster-admin admin
 }
 
 install_fabric8() {
@@ -344,6 +349,7 @@ case $OPTS in
     create_certs
     create_registry
     create_routes
+    apply_policies
     install_fabric8 
     shift
     ;;
