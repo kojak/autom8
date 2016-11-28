@@ -260,9 +260,9 @@ create_certs() {
     --signer-cert=/var/lib/openshift/openshift.local.config/master/ca.crt \
     --signer-key=/var/lib/openshift/openshift.local.config/master/ca.key \
     --signer-serial=/var/lib/openshift/openshift.local.config/master/ca.serial.txt \
-    --hostnames=docker-registry.default.svc.cluster.local,kubernetes.default.svc,kubernetes.default.svc.cluster.local,localhost,openshift.default.svc.cluster.local,127.0.0.1,10.0.0.4,kojak.bluebank.io,${INT_IPADDR},${FQDN} \
-    --cert=/var/lib/openshift/openshift.local.config/master/openshift-registry.crt \
-    --key=/var/lib/openshift/openshift.local.config/master/openshift-registry.key
+    --hostnames=docker-registry.default.svc.cluster.local,kubernetes.default.svc,kubernetes.default.svc.cluster.local,localhost,openshift.default.svc.cluster.local,127.0.0.1,${INT_IPADDR},${FQDN},${SUBDOMAIN} \
+    --cert=/var/lib/openshift/openshift.local.config/master/ca.crt \
+    --key=/var/lib/openshift/openshift.local.config/master/ca.key
 
     mkdir -p ~/.kube/
     ln -s /var/lib/openshift/openshift.local.config/master/admin.kubeconfig ~/.kube/config
@@ -306,9 +306,6 @@ install_fabric8() {
 
     echo -e "# Installing fabric8..." >> ${LOG}
     gofabric8-linux-amd64 deploy --yes --namespace="default" --domain=${DOMAIN}
-    gofabric8-linux-amd64 secrets --yes
-    gofabric8-linux-amd64 volumes --yes
-    gofabric8-linux-amd64 routes --yes
     oc get oauthclient fabric8
 }
 
