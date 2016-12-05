@@ -309,7 +309,7 @@ install_fabric8() {
     oc get oauthclient fabric8
 }
 
-read -d '' USAGE << EOF
+read -d '' USAGE << 'EOF'
 Usage: kojak [options] <user input>
 -h, --help            show this help message and exit
 -f, --fqdn            prompt user for fully qualified domain name
