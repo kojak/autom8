@@ -63,6 +63,7 @@ install_packages() {
     echo -e "# Installing packages..." >> ${LOG}
     yum -y install epel-release
     yum -y install git wget unzip net-tools httpd-tools patch mlocate maven htop iftop curl tree bind-utils dos2unix
+    yum -y remove dnsmasq
 }
 
 create_profile() {
