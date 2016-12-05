@@ -243,7 +243,7 @@ initialise_openshift() {
     while true; do curl -k -s -f -o /dev/null --connect-timeout 1 https://localhost:8443/healthz/ready && break || sleep 1 ; done
     
     echo -e "# Creating user roles..." >> ${LOG}
-    oc adm policy add-cluster-role-to-user cluster-admin osadmin
+    oc adm policy add-cluster-role-to-user cluster-admin admin
     oc adm policy add-cluster-role-to-group cluster-reader system:serviceaccounts
     
     [[ -f "/tmp/openshift-ansible.git" ]] || cd /tmp && git clone https://github.com/openshift/openshift-ansible.git
