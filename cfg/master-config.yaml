@@ -192,7 +192,7 @@ projectConfig:
     mcsLabelsPerProject: 5
     uidAllocatorRange: 1000000000-1999999999/10000
 routingConfig:
-  subdomain: devops.bluebank.io
+  subdomain: devops.example.com
 serviceAccountConfig:
   limitSecretReferences: false
   managedNames:
