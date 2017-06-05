@@ -94,14 +94,14 @@ export HISTCONTROL='ignoreboth:erasedups'
 export FQDN="master.example.com"
 export DOMAIN="example.com"
 export SUBDOMAIN="cloudapps.example.com"
-export INT_IPADDR="192.168.122.100"
+export INT_IPADDR="192.168.122.4"
 
 # Configure tooling
 export OPENSHIFT=/var/lib/openshift
-export OPENSHIFT_VERSION=v1.4.0-rc1
-export OPENSHIFT_REVISION=b4e0954
-export OPENSHIFT_SERVER=openshift-origin-server-${OPENSHIFT_VERSION}.${OPENSHIFT_REVISION}
-export OPENSHIFT_CLIENT=openshift-origin-client-tools-${OPENSHIFT_VERSION}.${OPENSHIFT_REVISION}
+export OPENSHIFT_VERSION=v1.5.1
+export OPENSHIFT_REVISION=7b451fc
+export OPENSHIFT_SERVER=openshift-origin-server-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
+export OPENSHIFT_CLIENT=openshift-origin-client-tools-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
 export FABRIC8=/opt/gofabric8/
 export FAB_VERSION=0.4.105
 export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
@@ -202,7 +202,7 @@ Requires=docker.service network.service
 After=network.service
 
 [Service]
-ExecStart=/opt/openshift-origin-server-v1.4.0-rc1.b4e0954/openshift start --cors-allowed-origins=.* --master-config=/var/lib/openshift/openshift.local.config/master/master-config.yaml --node-config=/var/lib/openshift/openshift.local.config/node-${FQDN}/node-config.yaml
+ExecStart=/opt/openshift-origin-server-v1.5.1-7b451fc/openshift start --cors-allowed-origins=.* --master-config=/var/lib/openshift/openshift.local.config/master/master-config.yaml --node-config=/var/lib/openshift/openshift.local.config/node-${FQDN}/node-config.yaml
 WorkingDirectory=/var/lib/openshift/
 
 [Install]
