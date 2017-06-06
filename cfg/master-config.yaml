@@ -192,7 +192,7 @@ projectConfig:
     mcsLabelsPerProject: 5
     uidAllocatorRange: 1000000000-1999999999/10000
 routingConfig:
-  subdomain: apps.example.com
+  subdomain: ${SUBDOMAIN}
 serviceAccountConfig:
   limitSecretReferences: false
   managedNames:
@@ -213,9 +213,13 @@ servingInfo:
   namedCertificates: null
   requestTimeoutSeconds: 3600
   namedCertificates:
-    - certFile: ca.crt
-      keyFile: ca.key
+    - certFile: ${SUBDOMAIN}.crt
+      keyFile: ${SUBDOMAIN}.key
       names:
-        - "${FQDN}"
+        - "*.${SUBDOMAIN}"
+    - certFile: ${DOMAIN}.crt
+      keyFile: ${DOMAIN}.key
+      names:
+        - "*.${DOMAIN}"
 volumeConfig:
   dynamicProvisioningEnabled: true
