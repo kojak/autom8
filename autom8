@@ -91,9 +91,9 @@ export HISTIGNORE=' *:&:?:??'
 export HISTCONTROL='ignoreboth:erasedups'
 
 # Configure environment
-export FQDN="master.ocp.example.com"
+export FQDN="master.example.com"
 export DOMAIN="example.com"
-export SUBDOMAIN="ocp.example.com"
+export SUBDOMAIN="example.com"
 export INT_IPADDR="192.168.0.8"
 
 # Configure tooling
@@ -106,7 +106,7 @@ export FABRIC8=/opt/gofabric8/
 export FAB_VERSION=0.4.105
 export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
-export CA_BUNDLE=/var/lib/openshift/openshift.local.config/master/ocp.example.com.crt
+export CA_BUNDLE=/var/lib/openshift/openshift.local.config/master/example.com.crt
 export KUBERNETES_DOMAIN=${DOMAIN}
 
 # Turn on bash history options
@@ -250,8 +250,8 @@ create_certs() {
     echo -e "# Creating certs..users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm ca create-server-cert \
-    --signer-cert=/root/workspace/autom8/certs/ocp.example.com.crt \
-    --signer-key=/root/workspace/autom8/certs/ocp.example.com.key \
+    --signer-cert=/root/workspace/autom8/certs/example.com.crt \
+    --signer-key=/root/workspace/autom8/certs/example.com.key \
     --signer-serial=/var/lib/openshift/openshift.local.config/master/ca.serial.txt \
     --hostnames=docker-registry.default.svc.cluster.local,kubernetes.default.svc,kubernetes.default.svc.cluster.local,localhost,openshift.default.svc.cluster.local,127.0.0.1,${INT_IPADDR},registry.${SUBDOMAIN} \
     --cert=/var/lib/openshift/openshift.local.config/master/registry.crt \
@@ -271,7 +271,7 @@ create_registry() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm policy add-scc-to-user privileged -z registry 
     oadm registry --create --service-account=registry \
-    --tls-certificate=/root/workspace/autom8/certs/ocp.example.com.pem
+    --tls-certificate=/root/workspace/autom8/certs/example.com.pem
 }
 
 create_routes() {
@@ -293,7 +293,7 @@ expose_registry() {
     oc create route passthrough    \
     --service=docker-registry    \
     --hostname=registry.${SUBDOMAIN}
-    cp /root/workspace/autom8/certs/ocp.example.com.pem /etc/pki/ca-trust/source/anchors/
+    cp /root/workspace/autom8/certs/example.com.pem /etc/pki/ca-trust/source/anchors/
     update-ca-trust
     systemctl stop docker.service
     systemctl start docker.service
