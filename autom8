@@ -62,7 +62,7 @@ update_system() {
 install_packages() {
     echo -e "# Installing packages..." >> ${LOG}
     yum -y install epel-release
-    yum -y install git wget unzip net-tools httpd-tools patch mlocate maven htop iftop curl tree bind-utils dos2unix
+    yum -y install git wget unzip net-tools httpd-tools patch mlocate maven htop iftop curl tree bind-utils dos2unix bash-completion git
     yum -y remove dnsmasq
 }
 
