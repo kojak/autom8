@@ -217,9 +217,5 @@ servingInfo:
       keyFile: ${SUBDOMAIN}.key
       names:
         - "*.${SUBDOMAIN}"
-    - certFile: ${DOMAIN}.crt
-      keyFile: ${DOMAIN}.key
-      names:
-        - "*.${DOMAIN}"
 volumeConfig:
   dynamicProvisioningEnabled: true
