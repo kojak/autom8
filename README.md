@@ -5,7 +5,7 @@ Kojak Autom8 is fully integrated DevOps circuit that uses Openshift Origin and F
 
 ![GitHub Logo](/slides/00.png)
 
-Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments.  The scripts included in this repository can be used to create a complete DevOps circuit with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
+Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete DevOps circuit with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
  
 Tool Chain
 ----------
@@ -15,7 +15,7 @@ Kojak Autom8 installs Openshift Origin and Fabric which provide industry reconis
 Installation Prerequisites
 ---------------------------
 
-Kojak is a virtual appliance and it not recommended that you install directly on your workstation.  The Installation options will build a virtual machine for you which will be accessible from your local host.  If you already have a virtual machine you can install Kojak directly on that machine and skip the virtual machine provisioning stage.  Kojak has been successfully installed and tested on CentOS 7+ and RHEL 7+.
+Kojak is a virtual appliance and it not recommended that you install directly on your workstation. The Installation options will build a virtual machine for you which will be accessible from your local host. If you already have a virtual machine you can install Kojak directly on that machine and skip the virtual machine provisioning stage. Kojak has been successfully installed and tested on CentOS 7+ and RHEL 7+.
 
 For more information about virtualization see below:
 
@@ -42,7 +42,20 @@ Your local host should be configured with the following minimum specifications:
 Installation Prerequisites
 --------------------------
 
-Create the virtual machine with the create-vm script.  You can modify the varibles in the script to control alloted resources but it is recommeded that you stick with the defaults. On your localhost execute the following commands.
+The Kojak virtual machine is configured with a set of default options.
+
+1. OS: CentOS 7
+2. Hostname: master.example.com
+3. IP Adress: 192.168.122.100
+4. Subnet Mask: 255.255.255.0
+
+If your're creating a virtual machine from scratch you should you configure it with the options details above. You can access the virtual machine via ssh at 192.168.122.100 using the following credentials:
+
+1. username: root
+2. password: root
+
+
+If you use the KVM hypervisor you can create the virtual machine with the create-vm script. You can modify the varibles in the script to control alloted resources but it is recommeded that you stick with the defaults. On your localhost execute the following commands.
 ```
 [root@localhost]# git clone https://github.com/kojak/autom8.git
 [root@localhost]# cd autom8
@@ -80,20 +93,6 @@ To configure new users login into the vitual machine and execute the following:
 ```
 htpasswd -b /etc/openshift/users.htpasswd <user> <password>
 ```
-
-Configuration Notes
--------------------
-The Kojak virtual machine is configured with a set of default options.  
-
-1. OS: CentOS 7
-2. Hostname: master.example.com
-3. IP Adress: 192.168.122.100
-4. Subnet Mask: 255.255.255.0
-
-You can access the virtual machine via ssh at 192.168.122.100 using the following credentials:
-
-1. username: root
-2. password: root
 
 Known Issues and How to Report Them
 -----------------------------------
