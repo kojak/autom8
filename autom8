@@ -41,7 +41,7 @@ exec_check() {
 }
 
 config_network() {
-    echo -e "# Configuring network..." >> ${LOG}
+    echo -e "# Configuring network...Please be patient!!!" >> ${LOG}
     yum -y remove NetworkManager*
     systemctl stop NetworkManager
     systemctl disable NetworkManager
