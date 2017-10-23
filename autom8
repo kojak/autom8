@@ -98,8 +98,8 @@ export INT_IPADDR="192.168.122.100"
 
 # Configure tooling
 export OPENSHIFT=/var/lib/openshift
-export OPENSHIFT_VERSION=v1.5.1
-export OPENSHIFT_REVISION=7b451fc
+export OPENSHIFT_VERSION=v3.6.0
+export OPENSHIFT_REVISION=c4dd4cf
 export OPENSHIFT_SERVER=openshift-origin-server-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
 export OPENSHIFT_CLIENT=openshift-origin-client-tools-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
 export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${PATH}
