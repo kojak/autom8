@@ -1,7 +1,7 @@
 Kojak - Autom8
 =======================
 
-Kojak Autom8 is an installater for Openshift Origin which preconfigures the container platform with many useful configuration updates which make it easy to create and deploy containers. 
+Kojak Autom8 is an installater for Openshift Origin which preconfigures the container platform with many useful options which make it easy to create and deploy containers. 
 
 ![GitHub Logo](/slides/00.png)
 
