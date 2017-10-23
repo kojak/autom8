@@ -39,8 +39,8 @@ Your local host should be configured with the following minimum specifications:
 2. 16GB RAM
 3. 128 GB Disk Space 
 
-Installation Prerequisites
---------------------------
+Virtual Machine Configuration
+-----------------------------
 
 The Kojak virtual machine is configured with a set of default options.
 
@@ -49,7 +49,7 @@ The Kojak virtual machine is configured with a set of default options.
 3. IP Adress: 192.168.122.100
 4. Subnet Mask: 255.255.255.0
 
-If your're creating a virtual machine from scratch you should you configure it with the options details above. You can access the virtual machine via ssh at 192.168.122.100 using the following credentials:
+If your're creating a virtual machine from scratch you should you configure it with the options detailed above. You can access the virtual machine via ssh at 192.168.122.100 using the following credentials:
 
 1. username: root
 2. password: root
