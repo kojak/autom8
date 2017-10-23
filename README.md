@@ -86,7 +86,7 @@ Log back into the system and execute the following commands.
 ```
 Or as a one liner.
 ```
-yum -y install git && mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8 master.example.com
+yum -y install git && mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8 -f master.example.com
 ```
 
 At this stage the system is fully installed and configured.  
