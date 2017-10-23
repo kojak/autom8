@@ -91,9 +91,9 @@ export HISTIGNORE=' *:&:?:??'
 export HISTCONTROL='ignoreboth:erasedups'
 
 # Configure environment
-export FQDN="master.example.com"
 export DOMAIN="example.com"
-export SUBDOMAIN="example.com"
+export FQDN="master.${DOMAIN}"
+export SUBDOMAIN="${DOMAIN}"
 export INT_IPADDR="192.168.122.100"
 
 # Configure tooling
@@ -102,9 +102,7 @@ export OPENSHIFT_VERSION=v1.5.1
 export OPENSHIFT_REVISION=7b451fc
 export OPENSHIFT_SERVER=openshift-origin-server-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
 export OPENSHIFT_CLIENT=openshift-origin-client-tools-${OPENSHIFT_VERSION}-${OPENSHIFT_REVISION}
-export FABRIC8=/opt/gofabric8/
-export FAB_VERSION=0.4.105
-export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${FABRIC8}:${PATH}
+export PATH=${OPENSHIFT}:/opt/${OPENSHIFT_SERVER}:/opt/${OPENSHIFT_CLIENT}:${PATH}
 export KUBECONFIG=${OPENSHIFT}/openshift.local.config/master/admin.kubeconfig
 export CA_BUNDLE=/var/lib/openshift/openshift.local.config/master/example.com.crt
 export KUBERNETES_DOMAIN=${DOMAIN}
