@@ -68,25 +68,24 @@ Add the following to your /etc/hosts file on your localhost in order to resolv t
 Installation Instructions
 ------------------------
 
-Login into the virtual machine (see configuraiton notes for login credentials) and checkout the contents of the Kojak Autom8 git repository to a suitable directory on your vanilla virtual machine and execute the kojak executable.
+Login and install git, checkout the kojak  repo, execute the docker install script and reboot 
 ```
 [root@localhost]# yum -y install git
+[root@localhost]# mkdir workspace && cd workspace
+[root@localhost]# git clone https://github.com/kojak/autom8.git
+[root@localhost]# cd autom8
 [root@localhost]# ./install-docker
 [root@localhost]# reboot
 ```
-
-Log back into the system and execute the following commands.
-
+Login and update the system.
 ```
-[root@localhost]# mkdir workspace
-[root@localhost]# cd workspace 
-[root@localhost]# git clone https://github.com/kojak/autom8.git
-[root@localhost]# cd autom8
+[root@localhost]# yum -y update
+```
+
+Login and execute the autom8 script
+```
+[root@localhost]# cd workspace/autom8
 [root@localhost]# ./auto8 -f master.example.com
-```
-Or as a one liner.
-```
-mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8 -f master.example.com
 ```
 
 At this stage the system is fully installed and configured.  
