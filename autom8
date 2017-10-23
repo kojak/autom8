@@ -36,7 +36,7 @@ exec_check() {
         exit
     else
         [[ $(id -u) == 0 ]] || echo -e "\n# This script requires root privileges to run"
-        [[ $(docker --version) == null ]] || echo -e "\n# Please make sure docker is installed and running"
+        [[ $(docker --version) != null ]] || echo -e "\n# Please make sure docker is installed and running"
     fi
 }
 
