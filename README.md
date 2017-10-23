@@ -70,6 +70,7 @@ Installation Instructions
 
 Login into the virtual machine (see configuraiton notes for login credentials) and checkout the contents of the Kojak Autom8 git repository to a suitable directory on your vanilla virtual machine and execute the kojak executable.
 ```
+[root@localhost]# yum -y install git
 [root@localhost]# ./install-docker
 [root@localhost]# reboot
 ```
@@ -77,7 +78,6 @@ Login into the virtual machine (see configuraiton notes for login credentials) a
 Log back into the system and execute the following commands.
 
 ```
-[root@localhost]# yum -y install git
 [root@localhost]# mkdir workspace
 [root@localhost]# cd workspace 
 [root@localhost]# git clone https://github.com/kojak/autom8.git
@@ -86,7 +86,7 @@ Log back into the system and execute the following commands.
 ```
 Or as a one liner.
 ```
-yum -y install git && mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8 -f master.example.com
+mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8 -f master.example.com
 ```
 
 At this stage the system is fully installed and configured.  
