@@ -75,11 +75,11 @@ Login into the virtual machine (see configuraiton notes for login credentials) a
 [root@localhost]# cd workspace 
 [root@localhost]# git clone https://github.com/kojak/autom8.git
 [root@localhost]# cd autom8
-[root@localhost]# ./auto8
+[root@localhost]# ./auto8 -f master.example.com
 ```
 Or as a one liner.
 ```
-yum -y install git && mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8
+yum -y install git && mkdir workspace && cd workspace && git clone https://github.com/kojak/autom8 && cd autom8 && ./autom8 master.example.com
 ```
 
 At this stage the system is fully installed and configured.  
