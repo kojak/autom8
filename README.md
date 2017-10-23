@@ -1,7 +1,7 @@
 Kojak - Autom8
 =======================
 
-Kojak Autom8 is fully integrated DevOps circuit that uses Openshift Origin and Fabric8 to deploy applications in the cloud.
+Kojak Autom8 is an installater for Openshift Origin which preconfigures the container platform with many useful configuration updates which make it easy to create and deploy containers. 
 
 ![GitHub Logo](/slides/00.png)
 
@@ -10,7 +10,7 @@ Kojak started off as a collection of scripts which were used to automate the ins
 Tool Chain
 ----------
 
-Kojak Autom8 installs Openshift Origin and Fabric which provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a DevOps platform to allow users to familiarize themselves with the DevOps aproach and tools.   
+Kojak Autom8 installs Openshift Origin and Fabric which provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a platform to allow users to familiarize themselves with microservices and 12 Factor oud native applications  
 
 Installation Prerequisites
 ---------------------------
