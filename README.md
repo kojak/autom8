@@ -70,6 +70,13 @@ Installation Instructions
 
 Login into the virtual machine (see configuraiton notes for login credentials) and checkout the contents of the Kojak Autom8 git repository to a suitable directory on your vanilla virtual machine and execute the kojak executable.
 ```
+[root@localhost]#./install-docker
+[root@localhost]#reboot
+```
+
+Log back into the system and execute the following commands.
+
+```
 [root@localhost]# yum -y install git
 [root@localhost]# mkdir workspace
 [root@localhost]# cd workspace 
