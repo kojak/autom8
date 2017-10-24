@@ -5,12 +5,12 @@ Kojak Autom8 is an installater for Openshift Origin which preconfigures the cont
 
 ![GitHub Logo](/slides/00.png)
 
-Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete DevOps circuit with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
+Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete SDLC CI/CD circuits with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
  
 Tool Chain
 ----------
 
-Kojak Autom8 installs Openshift Origin and Fabric which provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a platform to allow users to familiarize themselves with microservices and 12 Factor oud native applications  
+Kojak Autom8 installs Openshift Origin and with templates that provide industry reconised opensource toolchain designed to allow developers to build, test, deploy, promote, release and replicate product builds in a consistent and predictable way.  The long term goal is to provide a platform to allow users to familiarize themselves with microservices and 12 Factor oud native applications  
 
 Installation Prerequisites
 ---------------------------
@@ -90,7 +90,7 @@ Login and execute the autom8 script
 
 At this stage the system is fully installed and configured.  
 
-You can now browsing to the Fabric8 web console via http://fabric8.example.com with the following credentials:
+You can now browsing to the Fabric8 web console via http://master.example.com:8443 with the following credentials:
 
 1. username: admin
 2. password: admin
@@ -98,6 +98,11 @@ You can now browsing to the Fabric8 web console via http://fabric8.example.com w
 To configure new users login into the vitual machine and execute the following:
 ```
 htpasswd -b /etc/openshift/users.htpasswd <user> <password>
+```
+
+Use the deploy.sh script to 'Bring Your Own Container' and deploy it to your Openshift instance.
+```
+[root@localhost]# ./deploy.sh
 ```
 
 Known Issues and How to Report Them
