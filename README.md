@@ -91,7 +91,7 @@ Login and execute the autom8 script
 
 At this stage the system is fully installed and configured.  
 
-You can now browsing to the Fabric8 web console via http://master.example.com:8443 with the following credentials:
+You can now browsing to the web console via http://master.example.com:8443 with the following credentials:
 
 1. username: admin
 2. password: admin
