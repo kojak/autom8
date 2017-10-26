@@ -80,6 +80,7 @@ Login and install git, checkout the kojak  repo, execute the docker install scri
 Login and update the system.
 ```
 [root@localhost]# yum -y update
+[root@localhost]# reboot
 ```
 
 Login and execute the autom8 script
