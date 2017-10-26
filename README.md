@@ -63,7 +63,7 @@ If you use the KVM hypervisor you can create the virtual machine with the create
 ```
 Add the following to your /etc/hosts file on your localhost in order to resolv the microservices shipped with Kojak Autom8 as part of the DevOps Cicuit.
 ```
-192.168.122.100 example.com master.example.com fabric8.example.com fabric8-master.example.com docker-registry.example.com gogs.example.com nexus.example.com jenkins.example.com
+192.168.122.100 example.com master.example.com register.example.com
 ```
 Installation Instructions
 ------------------------
