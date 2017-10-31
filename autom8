@@ -66,6 +66,10 @@ install_packages() {
     curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
     yum -y install nodejs
     yum -y remove dnsmasq
+    wget https://services.gradle.org/distributions/gradle-3.4.1-bin.zip
+    mkdir /opt/gradle
+    unzip -d /opt/gradle gradle-3.4.1-bin.zip
+    ln -s /opt/gradle/gradle-3.4.1/bin/gradle /bin/gradle
 }
 
 create_profile() {
