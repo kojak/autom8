@@ -220,7 +220,7 @@ copy_certs() {
 create_linux_users() {
     echo -e "# Creating linux users..."
     useradd devel
-    echo echo -e "devel\ndevel\n"| passwd devel
+    echo -e "devel\ndevel\n"| passwd devel
     usermod -aG wheel devel
     groupadd docker && gpasswd -a devel docker && systemctl restart docker
     newgrp docker
