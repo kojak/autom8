@@ -218,8 +218,17 @@ copy_certs() {
     cp ${HOME}/workspace/autom8/certs/* ${OPENSHIFT}/openshift.local.config/master/
 }
 
-create_users() {
-    echo -e "# Creating users..." >> ${LOG}
+create_linux_users() {
+    echo -e "# Creating linux users..."
+    useradd devel
+    echo echo -e "devel\ndevel\n"| passwd devel
+    usermod -aG wheel devel
+    groupadd docker && gpasswd -a devel docker && systemctl restart docker
+    newgrp docker
+}
+
+create_openshift_users() {
+    echo -e "# Creating openshift users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     mkdir /etc/openshift
     htpasswd -cb /etc/openshift/htpasswd admin admin
@@ -333,7 +342,7 @@ case $OPTS in
     install_openshift
     config_openshift
     copy_certs
-    create_users
+    create_openshift_users
     initialise_openshift
     create_certs
     create_registry
