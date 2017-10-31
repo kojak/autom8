@@ -89,7 +89,7 @@ Login and execute the autom8 script
 [root@localhost]# ./auto8 -f master.example.com
 ```
 
-At this stage the system is fully installed and configured.  
+Reboot the vm to effect the docker user settings. From here on in you should login as the devel user.
 
 You can now browsing to the web console via http://master.example.com:8443 with the following credentials:
 

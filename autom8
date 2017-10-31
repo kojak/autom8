@@ -163,7 +163,6 @@ nameserver 8.8.4.4
 EOF
 }
 
-
 install_openshift_client() {
     echo -e "# Installing openshift client..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
