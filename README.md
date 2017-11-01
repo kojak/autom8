@@ -5,7 +5,7 @@ Kojak Autom8 is an installater for Openshift Origin which preconfigures the cont
 
 ![GitHub Logo](/slides/00.png)
 
-Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete SDLC CI/CD circuits with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
+Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete SDLC CI/CD circuits with Openshift Origin.
  
 Tool Chain
 ----------
