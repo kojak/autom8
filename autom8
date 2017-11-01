@@ -244,7 +244,8 @@ create_linux_users() {
     gpasswd -a devel docker
 
     newgrp docker << 'EOF'
-    echo -e "# Created newgrp docker"
+    echo -e "# Created newgrp docker";
+    id -gn;
     EOF
 
 
