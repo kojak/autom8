@@ -245,6 +245,7 @@ create_linux_users() {
 
     newgrp docker << 'EOF'
     echo -e "# Created newgrp docker";
+    touch somefile
     id -gn;
     EOF
 
