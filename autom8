@@ -243,9 +243,9 @@ create_linux_users() {
     usermod -aG wheel devel
     gpasswd -a devel docker
 
-    newgrp docker <<EONG
-    echo "Created newgrp docker"
-    EONG
+    newgrp docker << 'EOF'
+    echo -e "# Created newgrp docker"
+    EOF
 
 
     mkdir -p /home/devel/.kube
