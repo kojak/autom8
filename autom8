@@ -273,6 +273,7 @@ initialise_openshift() {
     for image in image-streams/image-streams-centos7.json; do cat $image | oc create -n openshift -f -; done
     for image in db-templates/*.json; do cat $image | oc create -n openshift -f -; done
     for image in quickstart-templates/*.json; do cat $image | oc create -n openshift -f -; done
+    cd -
 }
 
 create_certs() {
