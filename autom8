@@ -240,8 +240,6 @@ create_linux_users() {
     echo -e "devel\ndevel\n"| passwd devel
     usermod -aG wheel devel
     gpasswd -a devel docker 
-    systemctl daemon-reload
-    systemctl restart docker
     newgrp docker
     mkdir -p /home/devel/.kube
     cp -p /var/lib/openshift/openshift.local.config/master/admin.kubeconfig /home/devel/.kube/config
@@ -261,6 +259,7 @@ initialise_openshift() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
 
     systemctl daemon-reload
+    systemctl restart docker
     systemctl enable openshift.service
     systemctl start openshift.service
 
