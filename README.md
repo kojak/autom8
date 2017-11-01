@@ -84,7 +84,7 @@ Login and update the system.
 
 Login and execute the autom8 script
 ```
-[root@localhost]# cd workspace/autom8
+[root@localhost]# cd autom8
 [root@localhost]# ./auto8 -f master.example.com
 ```
 
