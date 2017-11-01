@@ -393,6 +393,7 @@ case $OPTS in
     rm -rf ~/.m2
     rm -rf ~/.kube
     rm -rf ~/.pki
+    rm -rf /bin/gradle
 
     systemctl restart docker
     shift
