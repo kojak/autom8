@@ -90,6 +90,17 @@ Login and execute the autom8 script
 
 Reboot the vm to effect the docker user settings. From here on in you should login as the devel user.
 
+If you want to have the devel user execute commands which require root user privileges will have to edit the sudoers files.
+```
+visudo
+```
+
+Uncommet the wheel user with no password entry as below:
+```
+## Same thing without a password
+%wheel  ALL=(ALL)       NOPASSWD: ALL
+```
+
 You can now browsing to the web console via http://master.example.com:8443 with the following credentials:
 
 1. username: admin
