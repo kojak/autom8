@@ -241,7 +241,7 @@ create_linux_users() {
     usermod -aG wheel devel
     gpasswd -a devel docker && systemctl restart docker
     newgrp docker
-    mkdir p /home/devel/.kube
+    mkdir -p /home/devel/.kube
     cp -p /var/lib/openshift/openshift.local.config/master/admin.kubeconfig /home/devel/.kube/config
     chown -R devel:devel /home/devel/.kube 
     echo -e "export KUBECONFIG=\"/home/devel/.kube/config\"" >> /home/devel/.bash_profile
@@ -393,6 +393,7 @@ case $OPTS in
     rm -rf /etc/profile.d/custom.sh
     rm -rf ~/.m2
     rm -rf ~/.kube
+    rm -rf /home/devel/.kube
     rm -rf ~/.pki
 
     systemctl restart docker
