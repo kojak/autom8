@@ -391,7 +391,6 @@ case $OPTS in
     rm -rf /bin/gradle
     rm -rf /var/lib/openshift
     rm -rf /root/*.log
-    rm -rf /root/gradle-*
     rm -rf /etc/openshift
     rm -rf /etc/profile.d/custom.sh
     rm -rf ~/.m2
