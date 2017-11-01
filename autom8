@@ -159,7 +159,7 @@ update_hosts(){
     echo -e "# Configuring hosts..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     cp -p /etc/hosts /etc/hosts.orig
-    cat > /etc/resolv.conf << 'EOF'
+    cat > /etc/hosts << 'EOF'
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
