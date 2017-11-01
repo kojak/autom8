@@ -220,7 +220,7 @@ config_openshift() {
     cd ${OPENSHIFT}
     /opt/${OPENSHIFT_SERVER}/openshift start --write-config=openshift.local.config 
     mv ${OPENSHIFT}/openshift.local.config/master/master-config.yaml ${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig
-    envsubst < ${HOME}/workspace/autom8/cfg/master-config.yaml > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
+    envsubst < ${HOME}/autom8/cfg/master-config.yaml > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
     
     # Fix the varible substition
     sed -e 's/openshift\/origin-:/openshift\/origin-\$\{component\}\:\$\{version\}/g' /var/lib/openshift/openshift.local.config/master/master-config.yaml > tmp.file
@@ -230,7 +230,7 @@ config_openshift() {
 copy_certs() {
     echo -e "# Copy certs..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
-    cp ${HOME}/workspace/autom8/certs/* ${OPENSHIFT}/openshift.local.config/master/
+    cp ${HOME}/autom8/certs/* ${OPENSHIFT}/openshift.local.config/master/
 }
 
 create_linux_users() {
@@ -279,8 +279,8 @@ create_certs() {
     echo -e "# Creating certs..users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm ca create-server-cert \
-    --signer-cert=/root/workspace/autom8/certs/example.com.crt \
-    --signer-key=/root/workspace/autom8/certs/example.com.key \
+    --signer-cert=/root/autom8/certs/example.com.crt \
+    --signer-key=/root/autom8/certs/example.com.key \
     --signer-serial=/var/lib/openshift/openshift.local.config/master/ca.serial.txt \
     --hostnames=docker-registry.default.svc.cluster.local,kubernetes.default.svc,kubernetes.default.svc.cluster.local,localhost,openshift.default.svc.cluster.local,127.0.0.1,${INT_IPADDR},registry.${SUBDOMAIN} \
     --cert=/var/lib/openshift/openshift.local.config/master/registry.crt \
@@ -300,7 +300,7 @@ create_registry() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm policy add-scc-to-user privileged -z registry 
     oadm registry --create --service-account=registry \
-    --tls-certificate=/root/workspace/autom8/certs/example.com.pem
+    --tls-certificate=/root/autom8/certs/example.com.pem
 }
 
 create_routes() {
@@ -308,7 +308,7 @@ create_routes() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm policy add-scc-to-user hostnetwork -z router
     oadm router router --replicas=1 --service-account=router \
-    --default-cert=/root/workspace/autom8/certs/example.com.pem
+    --default-cert=/root/autom8/certs/example.com.pem
 }
 
 apply_policies() {
@@ -322,7 +322,7 @@ expose_registry() {
     oc create route passthrough    \
     --service=docker-registry    \
     --hostname=registry.${SUBDOMAIN}
-    cp /root/workspace/autom8/certs/example.com.pem /etc/pki/ca-trust/source/anchors/
+    cp /root/autom8/certs/example.com.pem /etc/pki/ca-trust/source/anchors/
     update-ca-trust
     systemctl stop docker.service
     systemctl start docker.service

@@ -68,10 +68,9 @@ Add the following to your /etc/hosts file on your localhost in order to resolv t
 Installation Instructions
 ------------------------
 
-Login and install git, checkout the kojak  repo, execute the docker install script and reboot 
+Login and install git, checkout the kojak repo, execute the docker install script and reboot 
 ```
 [root@localhost]# yum -y install git
-[root@localhost]# mkdir workspace && cd workspace
 [root@localhost]# git clone https://github.com/kojak/autom8.git
 [root@localhost]# cd autom8
 [root@localhost]# ./install-docker
