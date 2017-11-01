@@ -387,8 +387,9 @@ case $OPTS in
     done
 
     rm -rf /opt/openshift*
-    rm -rf /var/lib/openshift
+    rm -rf /opt/gradle
     rm -rf /bin/gradle
+    rm -rf /var/lib/openshift
     rm -rf /root/*.log
     rm -rf /root/gradle-*
     rm -rf /etc/openshift
