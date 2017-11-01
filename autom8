@@ -386,6 +386,7 @@ case $OPTS in
 
     rm -rf /opt/openshift*
     rm -rf /var/lib/openshift
+    rm -rf /bin/gradle
     rm -rf /root/*.log
     rm -rf /root/gradle-*
     rm -rf /etc/openshift
@@ -393,7 +394,6 @@ case $OPTS in
     rm -rf ~/.m2
     rm -rf ~/.kube
     rm -rf ~/.pki
-    rm -rf /bin/gradle
 
     systemctl restart docker
     shift
