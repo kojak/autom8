@@ -235,11 +235,16 @@ copy_certs() {
 
 create_linux_users() {
     echo -e "# Creating linux users..." >> ${LOG}
+    source /etc/profile.d/custom.sh > /dev/null 2>&1
     useradd devel
     echo -e "devel\ndevel\n"| passwd devel
     usermod -aG wheel devel
     groupadd docker && gpasswd -a devel docker && systemctl restart docker
     newgrp docker
+    mkdir /home/devel/.kube
+    cp -p /var/lib/openshift/openshift.local.config/master/admin.kubeconfig /home/devel/.kube/config
+    chown -R devel:devel /home/devel/.kube 
+    echo -e "export KUBECONFIG=\"/home/devel/.kube/config\"" >> /home/devel/.bash_profile
 }
 
 create_openshift_users() {
