@@ -242,13 +242,6 @@ create_linux_users() {
     echo -e "devel\ndevel\n"| passwd devel
     usermod -aG wheel devel
     gpasswd -a devel docker
-
-    newgrp docker <<EOF
-    echo "This is running as group \$(id -gn)";
-    touch somefile;
-    id -gn;
-    EOF 
-
     mkdir -p /home/devel/.kube
     cp -p /var/lib/openshift/openshift.local.config/master/admin.kubeconfig /home/devel/.kube/config
     chown -R devel:devel /home/devel/.kube 
