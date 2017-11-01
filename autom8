@@ -240,6 +240,7 @@ create_linux_users() {
     echo -e "devel\ndevel\n"| passwd devel
     usermod -aG wheel devel
     gpasswd -a devel docker 
+    systemctl daemon-reload
     systemctl restart docker
     newgrp docker
     mkdir -p /home/devel/.kube
