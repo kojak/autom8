@@ -241,7 +241,8 @@ create_linux_users() {
     useradd devel
     echo -e "devel\ndevel\n"| passwd devel
     usermod -aG wheel devel
-    gpasswd -a devel docker && newgrp docker
+    gpasswd -a devel docker 
+    newgrp docker
     mkdir -p /home/devel/.kube
     cp -p /var/lib/openshift/openshift.local.config/master/admin.kubeconfig /home/devel/.kube/config
     chown -R devel:devel /home/devel/.kube 
