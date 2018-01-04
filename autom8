@@ -56,7 +56,6 @@ disable_firewall() {
     systemctl disable ip6tables > /dev/null 2>&1
     systemctl disable firewalld > /dev/null 2>&1
 }
-}
 
 update_system() {
     echo -e "# Updating system..." >> ${LOG}
