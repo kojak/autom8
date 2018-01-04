@@ -52,6 +52,10 @@ disable_firewall() {
     systemctl stop iptables > /dev/null 2>&1 
     systemctl stop ip6tables > /dev/null 2>&1
     systemctl stop firewalld > /dev/null 2>&1
+    systemctl disable iptables > /dev/null 2>&1 
+    systemctl disable ip6tables > /dev/null 2>&1
+    systemctl disable firewalld > /dev/null 2>&1
+}
 }
 
 update_system() {
@@ -66,7 +70,7 @@ install_packages() {
     curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
     yum -y install nodejs
     yum -y remove dnsmasq
-    [[ ! -f "/root/gradle-3.4.1-bin.zip" ]] || \
+    [[ -f "/root/gradle-3.4.1-bin.zip" ]] || \
     wget https://services.gradle.org/distributions/gradle-3.4.1-bin.zip
     mkdir /opt/gradle
     unzip -d /opt/gradle gradle-3.4.1-bin.zip
