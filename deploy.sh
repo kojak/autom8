@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (C) 2017 Salim Badakhchani.
+# Copyright (C) 2017 Bluebank.
 # Author: Salim Badakhchani <sbadakhc@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,26 +19,22 @@
 ########################################################################
 
 # Declare command line varibles
-LABEL="${1}"               # An arbitary label such as hte developers initials.
-PROJECT="${LABEL}-${2}"    # Prefix the project name with the user defined label
-IMAGE="${3}"                
-TAG="${4}"                 
-DOMAIN="master.com"
+PROJECT="${1}"    # Prefix the project name with the user defined label
+IMAGE="${2}"                
+TAG="${3}"                 
+DOMAIN="bluebank.io"
 REGISTRY="docker-registry-default.${DOMAIN}:443"
 
 # Usage options and user arguments
 read -d '' USAGE << EOF
 Usage: ./deploy.sh [option] <arg>
 
-Example: ./deploy.sh -l <label> -p <openshift project> -i <docker image> -t <docker tag> -r <docker registry>
-Working example: ./deploy.sh -l xxx -p centos7-nginx-dev -i centos7-nginx -t latest -r registry.example.com:443
+Example: ./deploy.sh -p <openshift project> -i <docker image> -t <docker tag> -r <docker registry>
+Working example: ./deploy.sh -p uid-centos7-nginx-env -i centos7-nginx -t latest -r docker-registry-default.bluebank.io:443
 EOF
 
-while getopts :l:p:i:t:r:h OPTS; do
+while getopts :p:i:t:r:h OPTS; do
   case $OPTS in
-    l)
-      LABEL=$OPTARG
-      ;;
     p)
       PROJECT=$OPTARG
       ;;
@@ -78,16 +74,18 @@ oc new-project ${PROJECT} > /dev/null 2>&1
 docker login --username=$(oc whoami) --password=$(oc whoami -t) ${REGISTRY}
 docker build -t ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} .
 docker push ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
-oc new-app ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+#oc new-app ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} # Including this line as its needed is your pushing an image that does not exist in the local registry.
+oc new-app ${IMAGE}:${TAG}
 oc delete service ${IMAGE}
 oc create service nodeport ${IMAGE} --tcp=443:8080
 oc create route edge --hostname=${PROJECT}.${DOMAIN} --service=${IMAGE} --port=8080 --insecure-policy=Redirect
 }
 
-if [[ $# != 10 ]]; then echo "${USAGE}" && exit; fi
+if [[ $# != 8 ]]; then echo "${USAGE}" && exit; fi
 while [[ $# > 0 ]]; do OPTS="$1"; shift
 done
 
 deploy
 
 exit 0
+
