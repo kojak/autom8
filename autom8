@@ -52,6 +52,9 @@ disable_firewall() {
     systemctl stop iptables > /dev/null 2>&1 
     systemctl stop ip6tables > /dev/null 2>&1
     systemctl stop firewalld > /dev/null 2>&1
+    systemctl disable iptables > /dev/null 2>&1 
+    systemctl disable ip6tables > /dev/null 2>&1
+    systemctl disable firewalld > /dev/null 2>&1
 }
 
 update_system() {
@@ -62,8 +65,15 @@ update_system() {
 install_packages() {
     echo -e "# Installing packages..." >> ${LOG}
     yum -y install epel-release
-    yum -y install git wget unzip net-tools httpd-tools patch mlocate maven htop iftop curl tree bind-utils dos2unix bash-completion git yum-utils
+    yum -y install git wget unzip net-tools httpd-tools patch mlocate maven htop iftop curl tree bind-utils dos2unix bash-completion git yum-utils gcc-c++ make
+    curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
+    yum -y install nodejs
     yum -y remove dnsmasq
+    [[ -f "./gradle-3.4.1-bin.zip" ]] || \
+    wget https://services.gradle.org/distributions/gradle-3.4.1-bin.zip
+    mkdir /opt/gradle
+    unzip -d /opt/gradle gradle-3.4.1-bin.zip
+    ln -s /opt/gradle/gradle-3.4.1/bin/gradle /bin/gradle
 }
 
 create_profile() {
@@ -149,6 +159,18 @@ pull_images() {
     docker pull prom/haproxy-exporter
 }
 
+update_hosts(){
+    echo -e "# Configuring hosts..." >> ${LOG}
+    source /etc/profile.d/custom.sh > /dev/null 2>&1
+    cp -p /etc/hosts /etc/hosts.orig
+    cat > /etc/hosts << 'EOF'
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+192.168.122.100 example.com master.example.com registry.example.com
+EOF
+}
+
 install_dns(){
     echo -e "# Configuring dns..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
@@ -160,7 +182,6 @@ nameserver 8.8.8.8
 nameserver 8.8.4.4
 EOF
 }
-
 
 install_openshift_client() {
     echo -e "# Installing openshift client..." >> ${LOG}
@@ -203,21 +224,35 @@ config_openshift() {
     cd ${OPENSHIFT}
     /opt/${OPENSHIFT_SERVER}/openshift start --write-config=openshift.local.config 
     mv ${OPENSHIFT}/openshift.local.config/master/master-config.yaml ${OPENSHIFT}/openshift.local.config/master/master-config.yaml.orig
-    envsubst < ${HOME}/workspace/autom8/cfg/master-config.yaml > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
+    envsubst < ${HOME}/autom8/cfg/master-config.yaml > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
     
     # Fix the varible substition
     sed -e 's/openshift\/origin-:/openshift\/origin-\$\{component\}\:\$\{version\}/g' /var/lib/openshift/openshift.local.config/master/master-config.yaml > tmp.file
     cat tmp.file > ${OPENSHIFT}/openshift.local.config/master/master-config.yaml
+    cd -
 }
 
 copy_certs() {
     echo -e "# Copy certs..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
-    cp ${HOME}/workspace/autom8/certs/* ${OPENSHIFT}/openshift.local.config/master/
+    cp ${HOME}/autom8/certs/* ${OPENSHIFT}/openshift.local.config/master/
 }
 
-create_users() {
-    echo -e "# Creating users..." >> ${LOG}
+create_linux_users() {
+    echo -e "# Creating linux users..." >> ${LOG}
+    source /etc/profile.d/custom.sh > /dev/null 2>&1
+    useradd devel
+    echo -e "devel\ndevel\n"| passwd devel
+    usermod -aG wheel devel
+    gpasswd -a devel docker
+    mkdir -p /home/devel/.kube
+    cp -p /var/lib/openshift/openshift.local.config/master/admin.kubeconfig /home/devel/.kube/config
+    chown -R devel:devel /home/devel/.kube 
+    echo -e "export KUBECONFIG=\"/home/devel/.kube/config\"" >> /home/devel/.bash_profile
+}
+
+create_openshift_users() {
+    echo -e "# Creating openshift users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     mkdir /etc/openshift
     htpasswd -cb /etc/openshift/htpasswd admin admin
@@ -228,6 +263,7 @@ initialise_openshift() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
 
     systemctl daemon-reload
+    systemctl restart docker
     systemctl enable openshift.service
     systemctl start openshift.service
 
@@ -242,14 +278,15 @@ initialise_openshift() {
     for image in image-streams/image-streams-centos7.json; do cat $image | oc create -n openshift -f -; done
     for image in db-templates/*.json; do cat $image | oc create -n openshift -f -; done
     for image in quickstart-templates/*.json; do cat $image | oc create -n openshift -f -; done
+    cd -
 }
 
 create_certs() {
     echo -e "# Creating certs..users..." >> ${LOG}
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm ca create-server-cert \
-    --signer-cert=/root/workspace/autom8/certs/example.com.crt \
-    --signer-key=/root/workspace/autom8/certs/example.com.key \
+    --signer-cert=/root/autom8/certs/example.com.crt \
+    --signer-key=/root/autom8/certs/example.com.key \
     --signer-serial=/var/lib/openshift/openshift.local.config/master/ca.serial.txt \
     --hostnames=docker-registry.default.svc.cluster.local,kubernetes.default.svc,kubernetes.default.svc.cluster.local,localhost,openshift.default.svc.cluster.local,127.0.0.1,${INT_IPADDR},registry.${SUBDOMAIN} \
     --cert=/var/lib/openshift/openshift.local.config/master/registry.crt \
@@ -269,7 +306,7 @@ create_registry() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm policy add-scc-to-user privileged -z registry 
     oadm registry --create --service-account=registry \
-    --tls-certificate=/root/workspace/autom8/certs/example.com.pem
+    --tls-certificate=/root/autom8/certs/example.com.pem
 }
 
 create_routes() {
@@ -277,7 +314,7 @@ create_routes() {
     source /etc/profile.d/custom.sh > /dev/null 2>&1
     oadm policy add-scc-to-user hostnetwork -z router
     oadm router router --replicas=1 --service-account=router \
-    --default-cert=/root/workspace/autom8/certs/example.com.pem
+    --default-cert=/root/autom8/certs/example.com.pem
 }
 
 apply_policies() {
@@ -291,7 +328,7 @@ expose_registry() {
     oc create route passthrough    \
     --service=docker-registry    \
     --hostname=registry.${SUBDOMAIN}
-    cp /root/workspace/autom8/certs/example.com.pem /etc/pki/ca-trust/source/anchors/
+    cp /root/autom8/certs/example.com.pem /etc/pki/ca-trust/source/anchors/
     update-ca-trust
     systemctl stop docker.service
     systemctl start docker.service
@@ -326,12 +363,14 @@ case $OPTS in
     setup_env
     add_hostname
     pull_images
+    update_hosts
     install_dns
     install_openshift_client
     install_openshift
     config_openshift
     copy_certs
-    create_users
+    create_linux_users
+    create_openshift_users
     initialise_openshift
     create_certs
     create_registry
@@ -351,12 +390,15 @@ case $OPTS in
     done
 
     rm -rf /opt/openshift*
+    rm -rf /opt/gradle
+    rm -rf /bin/gradle
     rm -rf /var/lib/openshift
-    rm -rf ~/.m2
     rm -rf /root/*.log
     rm -rf /etc/openshift
     rm -rf /etc/profile.d/custom.sh
+    rm -rf ~/.m2
     rm -rf ~/.kube
+    rm -rf /home/devel/.kube
     rm -rf ~/.pki
 
     systemctl restart docker

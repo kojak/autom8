@@ -5,7 +5,7 @@ Kojak Autom8 is an installater for Openshift Origin which preconfigures the cont
 
 ![GitHub Logo](/slides/00.png)
 
-Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete SDLC CI/CD circuits with Source Control Manager, Continious Integration, Artifact Repository Manager and Testing Suite.
+Kojak started off as a collection of scripts which were used to automate the installation and configuration of the Koji build system. It was part of a productization effort to encourage the adoption of Koji for use in development, testing and staging environments. The scripts included in this repository can be used to create a complete SDLC CI/CD circuits with Openshift Origin.
  
 Tool Chain
 ----------
@@ -68,10 +68,9 @@ Add the following to your /etc/hosts file on your localhost in order to resolv t
 Installation Instructions
 ------------------------
 
-Login and install git, checkout the kojak  repo, execute the docker install script and reboot 
+Login and install git, checkout the kojak repo, execute the docker install script and reboot 
 ```
 [root@localhost]# yum -y install git
-[root@localhost]# mkdir workspace && cd workspace
 [root@localhost]# git clone https://github.com/kojak/autom8.git
 [root@localhost]# cd autom8
 [root@localhost]# ./install-docker
@@ -85,11 +84,22 @@ Login and update the system.
 
 Login and execute the autom8 script
 ```
-[root@localhost]# cd workspace/autom8
+[root@localhost]# cd autom8
 [root@localhost]# ./auto8 -f master.example.com
 ```
 
-At this stage the system is fully installed and configured.  
+Reboot the vm to effect the docker user settings. From here on in you should login as the devel user.
+
+If you want to have the devel user execute commands which require root user privileges will have to edit the sudoers files.
+```
+visudo
+```
+
+Uncommet the wheel user with no password entry as below:
+```
+## Same thing without a password
+%wheel  ALL=(ALL)       NOPASSWD: ALL
+```
 
 You can now browsing to the web console via https://master.example.com:8443 with the following credentials:
 
