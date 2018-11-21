@@ -101,7 +101,7 @@ Uncommet the wheel user with no password entry as below:
 %wheel  ALL=(ALL)       NOPASSWD: ALL
 ```
 
-You can now browsing to the web console via http://master.example.com:8443 with the following credentials:
+You can now browsing to the web console via https://master.example.com:8443 with the following credentials:
 
 1. username: admin
 2. password: admin
